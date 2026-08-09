@@ -1,10 +1,12 @@
-# 🌾 KrishiSetu | Millet Value Chain Platform
+# 🌾 KrishiSetu | Millet Value Chain Platform *(In Development)*
 
-**KrishiSetu** (also known as *ShreeStack*) is an end-to-end digital ecosystem designed to empower millet farmers and modernize the agricultural value chain. By bridging the gap between producers, processors, distributors, and end consumers, the platform improves market transparency, optimizes logistics, and promotes sustainable agricultural practices.
+> ⚠️ **Project Status:** Under Active Development
+
+**KrishiSetu** (also known as *ShreeStack*) is an end-to-end digital ecosystem currently in development to empower millet farmers and modernize the agricultural value chain. By bridging the gap between producers, processors, distributors, and end consumers, the platform aims to improve market transparency, optimize logistics, and promote sustainable agricultural practices.
 
 ---
 
-### ✨ Key Features
+### ✨ Key Features (Under Development)
 - **Direct Marketplace:** Eliminates middle-layer overheads by connecting farmers directly with bulk buyers and processors.
 - **Traceability & Quality Assurance:** Track millet produce from farm to fork, ensuring quality standard verification.
 - **Real-Time Market Insights:** Dynamic pricing alerts and regional demand forecasting for farmers.
