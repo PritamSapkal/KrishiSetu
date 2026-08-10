@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget{
            theme: ThemeData.light().copyWith(
              textTheme: TextTheme().copyWith(
                titleLarge: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold,fontSize:50.sp),
-              titleMedium: GoogleFonts.poppins(color: Colors.white),
+               titleMedium: GoogleFonts.poppins(color: Colors.white),
+               headlineLarge:GoogleFonts.robotoSlab(color: Colors.black),
+               headlineSmall:GoogleFonts.robotoSlab(color: Colors.black),
              )
            ),
          );
