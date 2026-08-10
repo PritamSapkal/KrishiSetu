@@ -114,7 +114,7 @@ class _OnbordingscreenState extends ConsumerState<Onbordingscreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black.withOpacity(0.001),
+                  backgroundColor: Colors.black.withOpacity(0.1),
                 ),
                 child: Text(
                   "Skip",

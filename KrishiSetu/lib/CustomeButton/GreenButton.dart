@@ -15,14 +15,20 @@ class Greenbutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(15),
       onTap: btfunction,
       child: Container(
         height: btheight,
         width: btwidth,
         decoration: BoxDecoration(
           color: Color(0xff2E7D32),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            spreadRadius: 4,
+            offset: Offset(0, 2)
+          )]
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
