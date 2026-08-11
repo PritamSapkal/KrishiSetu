@@ -21,6 +21,11 @@ class MyApp extends StatelessWidget{
            home: Splashscreen(),
 
            theme: ThemeData.light().copyWith(
+             // 1. Removes the expanding ripple wave globally
+               splashColor: Colors.transparent,
+
+               // 2. Removes the instant tap overlay highlight globally
+               highlightColor: Colors.transparent,
              textTheme: TextTheme().copyWith(
                titleLarge: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold,fontSize:50.sp),
                titleMedium: GoogleFonts.poppins(color: Colors.white),

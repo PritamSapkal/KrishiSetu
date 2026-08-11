@@ -10,9 +10,10 @@ import 'package:krishisetu/CustomeButton/GreenButton.dart';
 import '../Provider/booleanvalueProvider.dart';
 import '../Widgets/FormFieldTitle.dart';
 import '../Widgets/TextFormField.dart';
+import 'RoleSelectionPage.dart';
 
 class Signinpage extends ConsumerWidget {
-  var _Formkey = GlobalKey<FormState>();
+  final _Formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -186,7 +187,7 @@ class Signinpage extends ConsumerWidget {
                         btname: "Sign in",
                         btfunction: () {
                           if(_Formkey.currentState!.validate()){
-                            print("Both data enter completely");
+                           print("All Fields are fieled completely..");
                           }
                           else{
                             print("data not enter completely");
@@ -242,6 +243,7 @@ class Signinpage extends ConsumerWidget {
                                          ),
                     ),
 
+                    // Create Account TextButton
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8,15,8,8),
                       child: Row(
@@ -249,7 +251,9 @@ class Signinpage extends ConsumerWidget {
                         children: [
                           Text("New to KrishiSetu?",style: GoogleFonts.poppins(color: Colors.grey,fontSize: 13.sp),),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Roleselectionpage(),));
+                            },
                             child: Text(
                               "Create Account",
                               style: GoogleFonts.poppins(
