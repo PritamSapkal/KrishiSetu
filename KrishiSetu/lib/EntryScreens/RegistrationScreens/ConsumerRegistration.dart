@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../CustomeButton/GreenButton.dart';
 import '../../Provider/booleanvalueProvider.dart';
+import '../../Widgets/CustomeButton/GreenButton.dart';
 import '../../Widgets/FormFieldTitle.dart';
 import '../../Widgets/TextFormField.dart';
 import '../SignInPage.dart';
@@ -137,6 +137,7 @@ class _ConsumerregistrationState extends ConsumerState<Consumerregistration> {
                          Formfieldtitle(title: "Mobile Number"),
                         SizedBox(height: 6.h),
                          Textformfieldwidget(
+                           KeyBoardType: TextInputType.number,
                           isObscure: false,
                           errormessage: "Please enter your mobile number",
                           hinttext: "+91 10-digit mobile number",
@@ -148,6 +149,7 @@ class _ConsumerregistrationState extends ConsumerState<Consumerregistration> {
                          Formfieldtitle(title: "Email Address"),
                         SizedBox(height: 6.h),
                          Textformfieldwidget(
+                           KeyBoardType: TextInputType.emailAddress,
                           isObscure: false,
                           errormessage: "Please enter valid email address",
                           hinttext: "Enter e-mail address",

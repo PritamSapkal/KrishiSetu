@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../CustomeButton/GreenButton.dart';
+import '../../Widgets/CustomeButton/GreenButton.dart';
 import '../../Provider/booleanvalueProvider.dart';
 import '../../Widgets/FormFieldTitle.dart';
 import '../../Widgets/TextFormField.dart';
@@ -138,6 +138,7 @@ class _ShgregistrationState extends ConsumerState<Shgregistration> {
                         Formfieldtitle(title: "Mobile Number"),
                         SizedBox(height: 6.h),
                         Textformfieldwidget(
+                          KeyBoardType: TextInputType.number,
                           isObscure: false,
                           errormessage: "Please enter 10-digit mobile number",
                           hinttext: "+91 10-digit mobile number",
@@ -149,6 +150,7 @@ class _ShgregistrationState extends ConsumerState<Shgregistration> {
                         Formfieldtitle(title: "Email Address"),
                         SizedBox(height: 6.h),
                         Textformfieldwidget(
+                          KeyBoardType: TextInputType.emailAddress,
                           isObscure: false,
                           errormessage: "Please enter valid email address",
                           hinttext: "Enter e-mail address",
@@ -223,6 +225,7 @@ class _ShgregistrationState extends ConsumerState<Shgregistration> {
                         Formfieldtitle(title: "Number of Members"),
                         SizedBox(height: 6.h),
                         Textformfieldwidget(
+                          KeyBoardType: TextInputType.number,
                           isObscure: false,
                           errormessage: "Please enter total member count",
                           hinttext: "e.g. 10 or 15",

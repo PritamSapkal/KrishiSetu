@@ -4,28 +4,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Textformfieldwidget extends StatelessWidget{
-  Textformfieldwidget({this.errormessage,this.hinttext,this.suffixicon, this.prefixicon, required this.isObscure,super.key});
+  Textformfieldwidget({this.onSaved,this.validator,this.controller,this.KeyBoardType,this.errormessage,this.hinttext,this.suffixicon, this.prefixicon, required this.isObscure,super.key});
   final IconButton ? suffixicon;
   final bool isObscure;
   final Icon ? prefixicon;
   final String ? hinttext;
   final String? errormessage;
+  final TextInputType? KeyBoardType;
+  final TextEditingController? controller;
+  final FormFieldSetter<String>? onSaved;
+
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Colors.green,
+      controller: controller,
+      keyboardType: KeyBoardType,
       style:GoogleFonts.poppins(color: Colors.black),
       obscureText: isObscure,
       obscuringCharacter: "*",
       //maxLines:10,
-      validator: (value){
-        if(value==null||value.trim().length==0) {
-          return errormessage;
-        }
-        return null;
-      },
-      onSaved: (value){},
+      validator: validator ??
+              (value) {
+            if (value == null || value.trim().isEmpty) {
+              return errormessage;
+            }
+            return null;
+          },
+
+      onSaved: onSaved,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
           vertical: 15.h,   // Decreasing this lowers the height

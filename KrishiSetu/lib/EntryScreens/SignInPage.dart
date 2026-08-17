@@ -5,26 +5,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:krishisetu/CustomeButton/GreenButton.dart';
-
+import '../../Widgets/CustomeButton/GreenButton.dart';
+import '../Functions/signinnavigation.dart';
 import '../Provider/booleanvalueProvider.dart';
 import '../Widgets/FormFieldTitle.dart';
 import '../Widgets/TextFormField.dart';
 import 'RoleSelectionPage.dart';
-
 class Signinpage extends ConsumerWidget {
   final _Formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isObscure = ref.watch(obscurepasswordProvider);
+    final TextEditingController emailcontroller= TextEditingController();
+    final TextEditingController passwordcontroller=TextEditingController();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
         child: Column(
           children: [
-            // first green container
+            // first green container welcome back and sign in to continue text
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -119,6 +120,8 @@ class Signinpage extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Textformfieldwidget(
+                        controller: emailcontroller,
+                        KeyBoardType: TextInputType.emailAddress,
                         isObscure: false,
                         errormessage: "Please enter valid email address",
                         hinttext: "Enter e-mail address",
@@ -137,16 +140,13 @@ class Signinpage extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Textformfieldwidget(
+                        controller: passwordcontroller,
                         suffixicon: IconButton(
                           onPressed: () {
                             if (isObscure) {
-                              ref
-                                  .read(obscurepasswordProvider.notifier)
-                                  .update((state) => false);
+                              ref.read(obscurepasswordProvider.notifier).update((state) => false);
                             } else {
-                              ref
-                                  .read(obscurepasswordProvider.notifier)
-                                  .update((state) => true);
+                              ref.read(obscurepasswordProvider.notifier).update((state) => true);
                             }
                           },
                           icon: isObscure
@@ -187,7 +187,7 @@ class Signinpage extends ConsumerWidget {
                         btname: "Sign in",
                         btfunction: () {
                           if(_Formkey.currentState!.validate()){
-                           print("All Fields are fieled completely..");
+                            SigninNavigation(emailcontroller.text.trim(),passwordcontroller.text.trim(),context);
                           }
                           else{
                             print("data not enter completely");

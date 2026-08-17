@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../CustomeButton/GreenButton.dart';
+import '../../Widgets/CustomeButton/GreenButton.dart';
 import '../Data/onbordingScreenList.dart';
 import '../Provider/IndexHandlingProvider.dart';
 import 'SignInPage.dart';
@@ -27,9 +27,7 @@ class _OnbordingscreenState extends ConsumerState<Onbordingscreen> {
             controller: _pagecontoller,
             physics: ClampingScrollPhysics(),
             onPageChanged: (index) {
-              ref
-                  .read(OnbordingindexProvider.notifier)
-                  .update((state) => index);
+              ref.read(OnbordingindexProvider.notifier).update((state) => index);
             },
             itemBuilder: (context, index) {
               return Column(
@@ -98,8 +96,8 @@ class _OnbordingscreenState extends ConsumerState<Onbordingscreen> {
             itemCount: bordinglist.length,
           ),
           // Skip Button
-          Positioned(
-            top: 20.h,
+          index<2?Positioned(
+            top: 40.h,
             right: 10.w,
             child: ElevatedButton(
               onPressed: () {
@@ -113,17 +111,18 @@ class _OnbordingscreenState extends ConsumerState<Onbordingscreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black.withOpacity(0.1),
+                backgroundColor: Colors.white.withOpacity(0.5),
               ),
               child: Text(
                 "Skip",
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   fontSize: 10.sp,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black
                 ),
               ),
             ),
-          ),
+          ):SizedBox.shrink(),
           // Smooth page Indicator
           Positioned(
             bottom: 140.h,
