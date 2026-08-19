@@ -8,11 +8,9 @@ import '../../../Data/FPO_Dummy_Data/Order_dummy_data.dart';
 import '../../../Data/FPO_Dummy_Data/farmer_dummy_data.dart';
 import '../../../Data/FPO_Dummy_Data/fpo_dummy_data.dart';
 import '../../../Data/FPO_Dummy_Data/listing_dummy_data.dart';
-import '../../../Data/FPO_Dummy_Data/produce_dummy_data.dart';
 import '../../../Functions/GreetingFunction.dart';
 import '../../../Provider/FPO_totalproducesProvider.dart';
 import '../../../Provider/IndexHandlingProvider.dart';
-import '../../../Widgets/Customebackgroundcontainer.dart';
 import '../../../Widgets/DashBoardOverviewCart.dart';
 import '../../../Widgets/QuickActionCart.dart';
 import '../../../Widgets/customTitle.dart';
@@ -77,7 +75,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                 height: 220.h,
                 child: GridView.count(crossAxisCount: 2,
                 physics: ClampingScrollPhysics(),
-                crossAxisSpacing:20.sp,
+                crossAxisSpacing:10.sp,
                   mainAxisSpacing: 10.sp,
                   mainAxisExtent: 100.sp,
                   children: [
@@ -136,7 +134,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                 width: double.infinity,
                 height: 200.h,
                 child: GridView.count(crossAxisCount: 2,
-                  crossAxisSpacing:20.sp,
+                  crossAxisSpacing:10.sp,
                   mainAxisSpacing: 10.sp,
                   mainAxisExtent: 90.sp,
                   physics: ClampingScrollPhysics(),
@@ -173,7 +171,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
               ),
             ),
 
-            // Action Required Text & View All Text Button
+            // Text Action Required  & View All Text Button
             Padding(
               padding: const EdgeInsets.fromLTRB(15,0,15,10),
               child: Row(
@@ -184,33 +182,62 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                   Customtitle(title: "Action Required", size: 15.sp),
                   Spacer(),
                   // View All text Button
-                  TextButton(onPressed: (){}, child: Text("View All",style: GoogleFonts.poppins(color:Color(0xff964900),fontSize: 10.sp,fontWeight: FontWeight.w600),))
+                  TextButton(onPressed: (){
+                    ref.read(BottomAppbarIndexProvider.notifier).update((state)=>2);
+                  }, child: Text("View All",style: GoogleFonts.poppins(color:Color(0xff964900),fontSize: 10.sp,fontWeight: FontWeight.w600),))
                 ],
               ),
             ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            // Emergency  Order list
+            Padding(
+            padding: const EdgeInsets.symmetric(horizontal:10),
             child: Container(
-              height: 500,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.r),
+                  boxShadow: [BoxShadow(
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      color: Colors.black12
+                  )]
+              ),
+              height: 300,
               width: double.infinity,
               child: ListView.separated(
                   itemBuilder: (context, index){
+                    // order container
                     return Container(
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(orderslist[index].orderId.toString(),style: TextStyle(color: Colors.grey,fontSize: 20.sp),)
+                            // order id
+                            Text(orderslist[index].orderId.toString(),style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.w700),),
+
+                            // Product title
+                            Customtitle(title:orderslist[index].product.name,size:15.sp,),
+
+                            // buyer name & due date
+                            Row(mainAxisAlignment: MainAxisAlignment.start,
+                             children: [
+                               Icon(Icons.store_sharp,color: Color(0xff585F6C),size:15.sp,),
+                               Text(" "+orderslist[index].buyer.name,style: GoogleFonts.poppins(color:Color(0xff585F6C) ),),
+                               SizedBox(width: 5.w,),
+                               Icon(Icons.calendar_month_sharp,color: Color(0xff585F6C),size:15.sp),
+                               Text(" Due: "+orderslist[index].dueDate,style: GoogleFonts.poppins(color:Color(0xff585F6C) ),),
+                             ],
+                             ),
                           ],
                         ),
                       ),
                     );
                   },
                   separatorBuilder: (context, index) => Divider(),
-                  itemCount:orderslist.length ),
+                  itemCount:3),
             ),
           )
 

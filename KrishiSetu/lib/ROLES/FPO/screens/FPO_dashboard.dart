@@ -21,11 +21,12 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
   @override
   Widget build(BuildContext context) {
     int bottomappbarindex = ref.watch(BottomAppbarIndexProvider);
+    List<String> appbartitlelist=["KrishiSetu","My Produce","Orders","Farmers","Setting"];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff964900),
         foregroundColor: Colors.white,
-        title: Text("FPO Dashboard!", style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 15.sp,),
+        title: Text(appbartitlelist[bottomappbarindex], style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 15.sp,),
         ),
         // Notification icon
         actions: [
