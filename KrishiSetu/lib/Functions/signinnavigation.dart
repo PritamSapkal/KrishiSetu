@@ -9,19 +9,19 @@ import 'package:krishisetu/ROLES/SHG/screens/SHG_Dashboard.dart';
 import '../ROLES/CONSUMER/screens/Consumer_Dashboard.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? SigninNavigation(String email,String Password,BuildContext context){
-  if(email=="consumer@gmail.com"){
+  if(email=="consumer"){
     Navigator.push(context, MaterialPageRoute(builder: (context) => ConsumerDashboard(),));
   }
-  else if(email=="farmer@gmail.com"){
+  else if(email=="farmer"){
     Navigator.push(context, MaterialPageRoute(builder: (context) => FarmerDashboard(),));
   }
-  else if(email=="fpo@gmail.com"){
+  else if(email=="fpo"){
     Navigator.push(context, MaterialPageRoute(builder: (context) =>FpoDashboard(),));
   }
-  else if(email=="processor@gmail.com"){
+  else if(email=="processor"){
     Navigator.push(context, MaterialPageRoute(builder: (context) => ProcessorDashboard(),));
   }
-  else if(email=="shg@gmail.com"){
+  else if(email=="shg"){
     Navigator.push(context, MaterialPageRoute(builder: (context) =>ShgDashboard(),));
   }
   else{

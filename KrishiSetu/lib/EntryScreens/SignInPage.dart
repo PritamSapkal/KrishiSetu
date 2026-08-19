@@ -187,7 +187,7 @@ class Signinpage extends ConsumerWidget {
                         btname: "Sign in",
                         btfunction: () {
                           if(_Formkey.currentState!.validate()){
-                            SigninNavigation(emailcontroller.text.trim(),passwordcontroller.text.trim(),context);
+                            SigninNavigation(emailcontroller.text.toLowerCase().trim(),passwordcontroller.text.trim(),context);
                           }
                           else{
                             print("data not enter completely");
