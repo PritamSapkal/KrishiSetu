@@ -1,6 +1,6 @@
 import '../../Model/FarmerModel/produce_model.dart';
 
-final List<ProduceModel> produces = [
+final List<ProduceModel> produceslist = [
   ProduceModel(
     produceId: "PROD001",
     name: "Onion",

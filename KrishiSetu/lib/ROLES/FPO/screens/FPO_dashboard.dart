@@ -35,6 +35,7 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
           ),
         ],
       ),
+
       body: [
         Homescreen(),
         Producescreen(),
@@ -52,7 +53,7 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
           BottomNavigationBarItem(icon: Icon(Icons.home_filled),label:"Home"),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.tractor),label:"Produce" ),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined),label:"Orders" ),
-          BottomNavigationBarItem(icon: Icon(Icons.person_2_outlined),label:"Farmers" ),
+          BottomNavigationBarItem(icon: Icon(Icons.people_alt_outlined),label:"Farmers" ),
           BottomNavigationBarItem(icon: Icon(Icons.more_horiz_rounded),label:"more" ),
         ],
         selectedItemColor: const Color(0xff964900),     // Explicitly set text & icon active color
@@ -61,6 +62,7 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
         selectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w800),
         unselectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500 ),
         elevation: 0.1,
+        backgroundColor: Color(0xffF8F9FA),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import '../../Model/FarmerModel/listing_model.dart';
 
-final List<ListingModel> listings = [
+final List<ListingModel> listingslist = [
   ListingModel(
     listingId: "LST001",
     produceId: "PROD001",

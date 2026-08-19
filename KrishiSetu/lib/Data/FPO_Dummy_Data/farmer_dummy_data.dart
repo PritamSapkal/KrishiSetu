@@ -2,7 +2,7 @@
 
 import '../../Model/FarmerModel/farmer_model.dart';
 
-final List<FarmerModel> farmers = [
+final List<FarmerModel> farmerslist = [
   FarmerModel(
     farmerId: "FMR001",
     fullName: "Ramesh Patil",
