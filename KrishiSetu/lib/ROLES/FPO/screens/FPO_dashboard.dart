@@ -60,8 +60,8 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
         selectedItemColor: const Color(0xff964900),     // Explicitly set text & icon active color
         unselectedItemColor: const Color(0xff595F6B),
         selectedIconTheme: IconThemeData(size: 23.sp,),
-        selectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w800),
-        unselectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500 ),
+        selectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w700,fontSize: 10.sp),
+        unselectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500,fontSize: 8.sp),
         elevation: 0.1,
         backgroundColor: Color(0xffF8F9FA),
       ),
