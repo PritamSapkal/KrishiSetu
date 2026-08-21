@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:krishisetu/ROLES/FPO/screens/produceDetailsScreen.dart';
 import '../../../Data/FPO_Dummy_Data/produce_dummy_data.dart';
 import '../../../Model/FarmerModel/produce_model.dart';
 import '../../../Widgets/Iconcart.dart';
@@ -38,7 +39,7 @@ class Producescreen extends StatelessWidget {
               separatorBuilder: (context, index) => SizedBox(height: 14.h),
               itemBuilder: (context, index) {
                 final produce = produceslist[index];
-                return _buildProduceCard(produce, context);
+                return _buildProduceCard(produce, context,index);
               },
             ),
             SizedBox(height: 14.h),
@@ -111,7 +112,7 @@ class Producescreen extends StatelessWidget {
   }
 
   // --- Individual Produce Card ---
-  Widget _buildProduceCard(ProduceModel produce, dynamic context) {
+  Widget _buildProduceCard(ProduceModel produce, dynamic context,int index) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -306,7 +307,7 @@ class Producescreen extends StatelessWidget {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          // Navigate to Produce Detail screen
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => Producedetailsscreen(index:index),));
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.grey.shade300),

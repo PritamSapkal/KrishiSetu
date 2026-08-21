@@ -40,15 +40,19 @@ class Orderdetailscreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          "Order Details",
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 16.sp,
+        title: Center(
+          child: Text(
+            "Order Details",
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 16.sp,
+            ),
           ),
         ),
       ),
+
+      // Download Invoice Button
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         color: Colors.white,
@@ -111,10 +115,16 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            spreadRadius: 1,
+          )]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Status text
           Text(
             "STATUS",
             style: GoogleFonts.poppins(
@@ -124,10 +134,12 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
+          // Order Status
           Row(
             children: [
               const Icon(Icons.check_circle, color: Color(0xff2E7D32), size: 16),
               SizedBox(width: 6.w),
+              // order status
               Text(
                 order.status,
                 style: GoogleFonts.poppins(
@@ -139,6 +151,7 @@ class Orderdetailscreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
+          // Payment Text
           Text(
             "PAYMENT",
             style: GoogleFonts.poppins(
@@ -148,6 +161,7 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
+          // Payment Status
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
             decoration: BoxDecoration(
@@ -176,10 +190,17 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            spreadRadius: 1,
+          )]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+          //Order Information Text
           Text(
             "Order Information",
             style: GoogleFonts.poppins(
@@ -189,6 +210,8 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
+
+          //Order Id & Order Date
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -223,6 +246,8 @@ class Orderdetailscreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
+
+          //Due Date
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -250,10 +275,16 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            spreadRadius: 1,
+          )]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Product Details Text
           Text(
             "Product Details",
             style: GoogleFonts.poppins(
@@ -266,6 +297,7 @@ class Orderdetailscreen extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(6.r),
                 child: Image.asset(
@@ -282,10 +314,13 @@ class Orderdetailscreen extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 12.w),
+
+              //Product Name , Grade ND Quantity container
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Name
                     Text(
                       order.product.name,
                       style: GoogleFonts.poppins(
@@ -294,6 +329,8 @@ class Orderdetailscreen extends StatelessWidget {
                         color: textDark,
                       ),
                     ),
+
+                    //Grade
                     Text(
                       order.product.grade,
                       style: GoogleFonts.poppins(
@@ -302,6 +339,8 @@ class Orderdetailscreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 6.h),
+
+                    //Quantity
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                       decoration: BoxDecoration(
@@ -335,10 +374,16 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            spreadRadius: 1,
+          )]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //Buyer Information Text
           Text(
             "Buyer Information",
             style: GoogleFonts.poppins(
@@ -348,8 +393,11 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
+
+          // logo and Buyer Name
           Row(
             children: [
+
               CircleAvatar(
                 radius: 18.r,
                 backgroundColor: accentOrange,
@@ -363,10 +411,13 @@ class Orderdetailscreen extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.w),
+
+              //Buyer Name
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Buyer name
                     Text(
                       order.buyer.name,
                       style: GoogleFonts.poppins(
@@ -405,10 +456,16 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            spreadRadius: 1,
+          )]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //Payment Summary text
           Text(
             "Payment Summary",
             style: GoogleFonts.poppins(
@@ -418,6 +475,8 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
+
+          // SubTotal
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -436,6 +495,7 @@ class Orderdetailscreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8.h),
+          // taxes & Fees
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
