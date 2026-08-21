@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Data/FPO_Dummy_Data/farmer_dummy_data.dart';
+import '../../../Provider/FPO/famerlistProvider.dart';
 import '../../../Widgets/Customebackgroundcontainer.dart';
 
-class Farmerinfopage extends StatelessWidget {
+class Farmerinfopage extends ConsumerWidget {
   const Farmerinfopage({required this.index, super.key});
   final int index;
 
@@ -16,8 +18,8 @@ class Farmerinfopage extends StatelessWidget {
   static const Color cardSubBg = Color(0xffF5F6F8);
 
   @override
-  Widget build(BuildContext context) {
-    final farmer = farmerslist[index];
+  Widget build(BuildContext context,WidgetRef ref) {
+    final farmer = ref.watch(farmerFilteredListProvider)[index];
 
     return Scaffold(
       backgroundColor: scaffoldBg,

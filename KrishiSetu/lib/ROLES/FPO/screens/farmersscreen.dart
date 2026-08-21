@@ -1,16 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Data/FPO_Dummy_Data/farmer_dummy_data.dart';
+import '../../../Model/FarmerModel/farmer_model.dart';
+import '../../../Provider/FPO/famerlistProvider.dart';
 import '../../../Widgets/customTitle.dart';
-import 'FarmerInfoPage.dart';
+import 'FarmerDetailsPage.dart';
 
-class Farmersscreen extends StatelessWidget {
+class Farmersscreen extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<Farmersscreen> createState() => _FarmersscreenState();
+}
+
+class _FarmersscreenState extends ConsumerState<Farmersscreen> {
+  final TextEditingController farmername = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    farmername.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    final TextEditingController farmername = TextEditingController();
+    List<FarmerModel> FarmerList=ref.watch(farmerFilteredListProvider);
     return Scaffold(
       backgroundColor: Color(0xffF8F9FA),
       body: Column(
@@ -21,7 +37,9 @@ class Farmersscreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
             child: TextField(
               controller: farmername,
-              onChanged: (name) {},
+              onChanged: (name) {
+                ref.read(farmerFilteredListProvider.notifier).filterBySearch(name);
+              },
               style: TextStyle(color: Colors.black),
               autocorrect: true,
               decoration: InputDecoration(
@@ -73,17 +91,17 @@ class Farmersscreen extends StatelessWidget {
                           child: Icon(Icons.person_2_outlined,color: Color(0xff964900),),
                         ),
                         // farmer name
-                        title:Customtitle(title:farmerslist[index].fullName ,size: 13.sp,) ,
+                        title:Customtitle(title:FarmerList[index].fullName ,size: 13.sp,) ,
 
                         //  farmer crops and teh contribution
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(farmerslist[index].primaryCrops[0]+"."+farmerslist[index].primaryCrops[1],style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
+                            Text(FarmerList[index].primaryCrops.join(", "),style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
                             Row(
                               children: [
                                 Text("Contribution: ",style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
-                                Text(farmerslist[index].currentContribution.value.toString()+" "+farmerslist[index].currentContribution.unit,style: GoogleFonts.poppins(color: Colors.black,fontWeight: FontWeight.w500),),
+                                Text("${FarmerList[index].currentContribution.value} ${FarmerList[index].currentContribution.unit}",style: GoogleFonts.poppins(color: Colors.black,fontWeight: FontWeight.w500),),
                               ],
                             )
                           ],
@@ -93,7 +111,7 @@ class Farmersscreen extends StatelessWidget {
                   ),
                 );
               },
-              itemCount: farmerslist.length,
+              itemCount: FarmerList.length,
             ),
           ),
         ],
