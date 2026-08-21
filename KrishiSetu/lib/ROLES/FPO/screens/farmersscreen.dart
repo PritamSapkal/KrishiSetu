@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Data/FPO_Dummy_Data/farmer_dummy_data.dart';
 import '../../../Widgets/customTitle.dart';
+import 'FarmerInfoPage.dart';
 
 class Farmersscreen extends StatelessWidget {
   @override
@@ -50,38 +51,43 @@ class Farmersscreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding:  const EdgeInsets.symmetric(horizontal:20,vertical:5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.r),
-                          boxShadow: [BoxShadow(
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              color: Colors.black12
-                          )]
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Farmerinfopage(index: index,),));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.r),
+                            boxShadow: [BoxShadow(
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                color: Colors.black12
+                            )]
 
-                    ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 20.r,
-                        backgroundColor: Color(0xff964900).withOpacity(0.15),
-                        child: Icon(Icons.person_2_outlined,color: Color(0xff964900),),
                       ),
-                      // farmer name
-                      title:Customtitle(title:farmerslist[index].fullName ,size: 13.sp,) ,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 20.r,
+                          backgroundColor: Color(0xff964900).withOpacity(0.15),
+                          child: Icon(Icons.person_2_outlined,color: Color(0xff964900),),
+                        ),
+                        // farmer name
+                        title:Customtitle(title:farmerslist[index].fullName ,size: 13.sp,) ,
 
-                      //  farmer crops and teh contribution
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(farmerslist[index].primaryCrops[0]+"."+farmerslist[index].primaryCrops[1],style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
-                          Row(
-                            children: [
-                              Text("Contribution: ",style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
-                              Text(farmerslist[index].currentContribution.value.toString()+" "+farmerslist[index].currentContribution.unit,style: GoogleFonts.poppins(color: Colors.black,fontWeight: FontWeight.w500),),
-                            ],
-                          )
-                        ],
+                        //  farmer crops and teh contribution
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(farmerslist[index].primaryCrops[0]+"."+farmerslist[index].primaryCrops[1],style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
+                            Row(
+                              children: [
+                                Text("Contribution: ",style: GoogleFonts.poppins(color: Color(0xff585F6C)),),
+                                Text(farmerslist[index].currentContribution.value.toString()+" "+farmerslist[index].currentContribution.unit,style: GoogleFonts.poppins(color: Colors.black,fontWeight: FontWeight.w500),),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
