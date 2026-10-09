@@ -10,9 +10,7 @@ import '../../../core/Widgets/FormFieldTitle.dart';
 import '../../../core/Widgets/TextFormField.dart';
 import '../../../core/utils/signinnavigation.dart';
 import '../../fpo/viewmodels/booleanvalueProvider.dart';
-
-
-import 'RoleSelectionPage.dart';
+import 'RegistrationScreen.dart';
 class Signinpage extends ConsumerWidget {
   final _Formkey = GlobalKey<FormState>();
 
@@ -210,7 +208,7 @@ class Signinpage extends ConsumerWidget {
                           Text("New to KrishiSetu?",style: GoogleFonts.poppins(color: Colors.grey,fontSize: 13.sp),),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Roleselectionpage(),));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen(),));
                             },
                             child: Text(
                               "Create Account",
