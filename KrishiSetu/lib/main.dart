@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:krishisetu/EntryScreens/SplashScreen.dart';
+import 'features/entry/views/SplashScreen.dart';
+
 
 void main(){
   WidgetsFlutterBinding.ensureInitialized();
-  return runApp(ProviderScope(child: MyApp(),));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+    return runApp(ProviderScope(child: MyApp(),));
+  });
 }
 class MyApp extends StatelessWidget{
   @override
@@ -21,10 +25,10 @@ class MyApp extends StatelessWidget{
            home: Splashscreen(),
 
            theme: ThemeData.light().copyWith(
-             // 1. Removes the expanding ripple wave globally
+
                splashColor: Colors.transparent,
 
-               // 2. Removes the instant tap overlay highlight globally
+
                highlightColor: Colors.transparent,
              textTheme: TextTheme().copyWith(
                titleLarge: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold,fontSize:50.sp),
