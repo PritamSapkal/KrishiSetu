@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/farmer_dummy_data.dart';
-import '../../entry/models/farmer_model.dart';
+import '../../farmer/models/farmer_model.dart';
 
 // Base list provider
 final farmerListProvider = Provider<List<FarmerModel>>((ref) {

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/Widgets/customTitle.dart';
-import '../../../../features/entry/models/farmer_model.dart';
+import '../../../farmer/models/farmer_model.dart';
 import '../../../../features/fpo/viewmodels/famerlistProvider.dart';
 import 'FarmerDetailsPage.dart';
 
