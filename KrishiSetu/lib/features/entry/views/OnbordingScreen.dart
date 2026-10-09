@@ -160,7 +160,7 @@ class _OnbordingscreenState extends ConsumerState<Onbordingscreen> {
                       ref
                           .read(OnbordingindexProvider.notifier)
                           .update((state) => state++);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => Signinpage()),
                       );
