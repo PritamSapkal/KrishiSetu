@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:krishisetu/features/auth/views/SignInPage.dart';
 
 import '../../../../core/Widgets/CustomeButton/GreenButton.dart';
 import '../../../../core/Widgets/FormFieldTitle.dart';
@@ -212,10 +213,12 @@ class _FarmerSaveProfileScreenState extends ConsumerState<FarmerSaveProfileScree
                                       if (_selectedMilletCrops.length > 1) {
                                         _selectedMilletCrops.remove(crop);
                                       } else {
+                                        ScaffoldMessenger.of(context).showSnackBar;
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
-                                            content: Text("Select at least one crop"),
+                                            content: Text("Select at least one crop",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                                             duration: Duration(seconds: 1),
+                                            backgroundColor: primaryGreen,
                                           ),
                                         );
                                       }
@@ -302,6 +305,7 @@ class _FarmerSaveProfileScreenState extends ConsumerState<FarmerSaveProfileScree
                               content: Text("Farmer profile details saved successfully!"),
                             ),
                           );
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Signinpage()));
                         }
                       },
                       btwidth: double.infinity,

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/Widgets/CustomeButton/GreenButton.dart';
 import '../../../../core/Widgets/FormFieldTitle.dart';
 import '../../../../core/Widgets/TextFormField.dart';
+import '../SignInPage.dart';
 
 class ProcessorSaveProfileScreen extends ConsumerStatefulWidget {
   const ProcessorSaveProfileScreen({super.key});
@@ -344,6 +345,7 @@ class _ProcessorSaveProfileScreenState extends ConsumerState<ProcessorSaveProfil
                               content: Text("Processor profile saved successfully!"),
                             ),
                           );
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Signinpage()));
                         }
                       },
                       btwidth: double.infinity,

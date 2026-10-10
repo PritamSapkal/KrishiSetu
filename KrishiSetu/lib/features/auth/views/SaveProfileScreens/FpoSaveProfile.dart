@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/Widgets/CustomeButton/GreenButton.dart';
 import '../../../../core/Widgets/FormFieldTitle.dart';
 import '../../../../core/Widgets/TextFormField.dart';
+import '../SignInPage.dart';
 
 class FpoSaveProfileScreen extends ConsumerStatefulWidget {
   const FpoSaveProfileScreen({super.key});
@@ -209,6 +210,7 @@ class _FpoSaveProfileScreenState extends ConsumerState<FpoSaveProfileScreen> {
                               content: Text("FPO profile details saved successfully!"),
                             ),
                           );
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Signinpage()));
                         }
                       },
                       btwidth: double.infinity,
