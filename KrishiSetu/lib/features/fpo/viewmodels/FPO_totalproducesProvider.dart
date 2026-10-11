@@ -1,11 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../dummydata/ProductListingDummyData.dart';
 
-import '../../../core/constants/produce_dummy_data.dart';
+final totalProducesProvider = StateProvider<double>((ref) {
 
-var totalProducesProvider=StateProvider<double>((ref){
-  double total=0;
-  for(int i=0;i<produceslist.length;i++){
-    total=total+produceslist[i].volume;
-  }
-  return total;
+  return mockProductList.fold<double>(
+    0.0,
+        (previousTotal, product) => previousTotal + (product.quantity ?? 0).toDouble(),
+  );
 });
