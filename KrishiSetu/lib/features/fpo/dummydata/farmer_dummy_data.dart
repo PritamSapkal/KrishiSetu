@@ -1,4 +1,4 @@
-import '../../features/farmer/models/farmer_model.dart';
+import '../models/farmer_model.dart';
 
 final List<FarmerModel> farmerslist = [
   FarmerModel(
