@@ -14,7 +14,7 @@ SigninNavigation(String role,BuildContext context){
   else if(role.toLowerCase().contains("farmer")){
     Navigator.push(context, MaterialPageRoute(builder: (context) => FarmerDashboard(),));
   }
-  else if(role.contains("fpo")){
+  else if(role.toLowerCase().contains("fpo")){
     Navigator.push(context, MaterialPageRoute(builder: (context) =>FpoDashboard(),));
   }
   else if(role.toLowerCase().contains("processor")){

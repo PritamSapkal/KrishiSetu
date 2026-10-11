@@ -62,8 +62,6 @@ class _SigninpageState extends ConsumerState<Signinpage> {
             duration: const Duration(seconds: 2),
           ));
         return data['user']['role'].toString();
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => SigninNavigation(data['user']['role'].toString(),context),));
-
       }
       else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -82,12 +80,13 @@ class _SigninpageState extends ConsumerState<Signinpage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Login failed : Please Ckeck Your Internet Connection..!)",
+            "Login failed : Please Ckeck Your Internet Connection..!, but temporarly we continuw with teh offline login",
             style: GoogleFonts.poppins(),
           ),
           backgroundColor: Colors.red,
         ),
       );
+      SigninNavigation(email,context);
     }
 
     finally{
@@ -290,6 +289,7 @@ class _SigninpageState extends ConsumerState<Signinpage> {
                           btfunction: ()async{
                             if (_Formkey.currentState!.validate()) {
                               String? role= await signin(emailcontroller.text.trim(),passwordcontroller.text.trim(),context);
+                              print(role);
                               if(role!=null){
                                SigninNavigation(role,context);
                               }
