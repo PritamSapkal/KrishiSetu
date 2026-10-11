@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../../../../core/constants/Order_dummy_data.dart';
-import '../../../farmer/models/OrderModel.dart';
+// Adjust path if needed
+import '../../../../core/models/OrderModel.dart';
+import '../../dummydata/OrderDummyList.dart';
 import 'OrderDetailScreen.dart';
 
 class Ordersscren extends StatefulWidget {
@@ -20,7 +21,7 @@ class _OrdersscrenState extends State<Ordersscren> {
   static const Color textMuted = Color(0xff8A9099);
 
   String selectedTab = "All";
-  final List<String> tabs = ["All", "Active", "Completed", "Cancelled"];
+  final List<String> tabs = ["All", "Pending", "Active", "Delivered", "Cancelled"];
 
   final currencyFormatter = NumberFormat.currency(
     locale: 'en_IN',
@@ -30,10 +31,19 @@ class _OrdersscrenState extends State<Ordersscren> {
 
   @override
   Widget build(BuildContext context) {
-    // Filter list based on the active selected tab
-    final filteredOrders = selectedTab == "All"
-        ? orderslist
-        : orderslist.where((order) => order.status.toLowerCase() == selectedTab.toLowerCase()).toList();
+    // Filter list based on selected category tab
+    final filteredOrders = mockOrderList.where((order) {
+      if (selectedTab == "All") return true;
+      if (selectedTab == "Pending") return order.status == OrderStatus.PENDING;
+      if (selectedTab == "Active") {
+        return order.status == OrderStatus.CONFIRMED ||
+            order.status == OrderStatus.PROCESSING ||
+            order.status == OrderStatus.SHIPPED;
+      }
+      if (selectedTab == "Delivered") return order.status == OrderStatus.DELIVERED;
+      if (selectedTab == "Cancelled") return order.status == OrderStatus.CANCELLED;
+      return true;
+    }).toList();
 
     return Scaffold(
       backgroundColor: scaffoldBg,
@@ -61,7 +71,9 @@ class _OrdersscrenState extends State<Ordersscren> {
               separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
                 final order = filteredOrders[index];
-                return _buildOrderCard(order,index);
+                // Find actual index in mockOrderList so detail screen gets the right item
+                final originalIndex = mockOrderList.indexOf(order);
+                return _buildOrderCard(order, originalIndex);
               },
             ),
           ),
@@ -75,64 +87,76 @@ class _OrdersscrenState extends State<Ordersscren> {
     return Container(
       color: Colors.transparent,
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: tabs.map((tab) {
-          final isSelected = selectedTab == tab;
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedTab = tab;
-              });
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: isSelected ? primaryBrown : Colors.white,
-                borderRadius: BorderRadius.circular(20.r),
-                border: Border.all(
-                  color: isSelected ? primaryBrown : const Color(0xffE2E5EA),
-                  width: 1,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: tabs.map((tab) {
+            final isSelected = selectedTab == tab;
+            return Padding(
+              padding: EdgeInsets.only(right: 8.w),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTab = tab;
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: isSelected ? primaryBrown : Colors.white,
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: isSelected ? primaryBrown : const Color(0xffE2E5EA),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    tab,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11.sp,
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      color: isSelected ? Colors.white : const Color(0xff6C727F),
+                    ),
+                  ),
                 ),
               ),
-              child: Text(
-                tab,
-                style: GoogleFonts.poppins(
-                  fontSize: 11.sp,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  color: isSelected ? Colors.white : const Color(0xff6C727F),
-                ),
-              ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
   // --- Order Card ---
   Widget _buildOrderCard(OrderModel order, int index) {
+    final formattedDate = DateFormat('dd MMM yyyy, hh:mm a').format(order.createdAt);
+
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
         border: Border.all(color: const Color(0xffEFEFEF)),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            spreadRadius: 0.5,
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Order ID & Status Badge
+          // Order ID & Status Badge Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order id
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Order Id text
                   Text(
                     "ORDER ID",
                     style: GoogleFonts.poppins(
@@ -141,9 +165,8 @@ class _OrdersscrenState extends State<Ordersscren> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  // Order Id in number
                   Text(
-                    "#${order.orderId}",
+                    "#${order.id.length > 8 ? order.id.substring(order.id.length - 8) : order.id}",
                     style: GoogleFonts.poppins(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w700,
@@ -152,19 +175,13 @@ class _OrdersscrenState extends State<Ordersscren> {
                   ),
                 ],
               ),
-
-              // Oredr Status & Date
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  // Order Status
                   _buildStatusBadge(order.status),
-
                   SizedBox(height: 3.h),
-
-                  // Order Date
                   Text(
-                    order.orderDate,
+                    formattedDate,
                     style: GoogleFonts.poppins(
                       fontSize: 9.sp,
                       color: textMuted,
@@ -177,44 +194,58 @@ class _OrdersscrenState extends State<Ordersscren> {
 
           SizedBox(height: 12.h),
 
-          // Buyer & Product Row
+          // Product & Buyer Row with Network Thumbnail
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Product Image with Loading and Error Fallbacks
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.r),
+                child: Image.network(
+                  order.imageUrl,
+                  width: 48.r,
+                  height: 48.r,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: 48.r,
+                      height: 48.r,
+                      color: const Color(0xffFAF0E6),
+                      child: const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2, color: primaryBrown),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 48.r,
+                    height: 48.r,
+                    color: const Color(0xffECEFEF),
+                    child: Icon(Icons.eco, color: primaryBrown, size: 24.sp),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10.w),
+
+              // Product Name and Buyer Identifier
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Buyer",
-                      style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted),
-                    ),
-                    Text(
-                      order.buyer.name,
+                      order.name.toUpperCase(),
                       style: GoogleFonts.poppins(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
                         color: textDark,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                    SizedBox(height: 2.h),
                     Text(
-                      "Product",
-                      style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted),
-                    ),
-                    Text(
-                      "${order.product.name} (${order.product.grade})",
+                      "Buyer ID: #${order.buyerId.length > 6 ? order.buyerId.substring(order.buyerId.length - 6) : order.buyerId}",
                       style: GoogleFonts.poppins(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w600,
-                        color: textDark,
+                        fontSize: 10.sp,
+                        color: textMuted,
                       ),
                     ),
                   ],
@@ -222,26 +253,23 @@ class _OrdersscrenState extends State<Ordersscren> {
               ),
             ],
           ),
+
           SizedBox(height: 10.h),
 
           // Quantity & Total Amount Row
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Quantity
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Quantity Text
                     Text(
                       "Quantity",
                       style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted),
                     ),
-                    // Quantity number And unit
                     Text(
-                      "${order.quantity} ${order.quantityUnit}",
+                      "${order.quantity} ${order.unit}",
                       style: GoogleFonts.poppins(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w600,
@@ -252,7 +280,6 @@ class _OrdersscrenState extends State<Ordersscren> {
                 ),
               ),
               SizedBox(width: 8.w),
-              // Total Amount
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,7 +289,7 @@ class _OrdersscrenState extends State<Ordersscren> {
                       style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted),
                     ),
                     Text(
-                      currencyFormatter.format(order.totalAmount),
+                      currencyFormatter.format(order.totalPrice),
                       style: GoogleFonts.poppins(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w700,
@@ -274,39 +301,39 @@ class _OrdersscrenState extends State<Ordersscren> {
               ),
             ],
           ),
+
           SizedBox(height: 12.h),
 
-          // Payment Status & View Details Action
+          // Price Per Unit & View Details Action
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
-              // Payment Status
               Row(
                 children: [
-                  // Payment status Icon
                   Icon(
                     Icons.payments_outlined,
                     size: 15.sp,
-                    color: _getPaymentStatusColor(order.paymentStatus),
+                    color: const Color(0xff2E7D32),
                   ),
                   SizedBox(width: 4.w),
-                  // Payment status
                   Text(
-                    order.paymentStatus,
+                    "₹${order.pricePerUnit.toStringAsFixed(0)} / ${order.unit}",
                     style: GoogleFonts.poppins(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w600,
-                      color: _getPaymentStatusColor(order.paymentStatus),
+                      color: const Color(0xff2E7D32),
                     ),
                   ),
                 ],
               ),
-
-              // View Detail Button
               OutlinedButton(
                 onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => Orderdetailscreen(index: index,),));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Orderdetailscreen(index: index),
+                    ),
+                  );
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.grey.shade300),
@@ -332,31 +359,36 @@ class _OrdersscrenState extends State<Ordersscren> {
     );
   }
 
-  // --- Status Badge Helper ---
-  Widget _buildStatusBadge(String status) {
+  // --- Status Badge Helper using OrderStatus Enum ---
+  Widget _buildStatusBadge(OrderStatus status) {
     Color bg;
     Color fg;
 
-    switch (status.toLowerCase()) {
-      case 'completed':
-        bg = const Color(0xffEAF7ED);
-        fg = const Color(0xff2E7D32);
-        break;
-      case 'active':
+    switch (status) {
+      case OrderStatus.PENDING:
         bg = const Color(0xffFFF4E5);
         fg = const Color(0xffB76E00);
         break;
-      case 'cancelled':
-        bg = const Color(0xffFFEBEE);
-        fg = const Color(0xffC62828);
-        break;
-      case 'new':
+      case OrderStatus.CONFIRMED:
         bg = const Color(0xffE3F2FD);
         fg = const Color(0xff1565C0);
         break;
-      default:
-        bg = const Color(0xffF0F0F0);
-        fg = Colors.black54;
+      case OrderStatus.PROCESSING:
+        bg = const Color(0xffF3E5F5);
+        fg = const Color(0xff7B1FA2);
+        break;
+      case OrderStatus.SHIPPED:
+        bg = const Color(0xffE8EAF6);
+        fg = const Color(0xff283593);
+        break;
+      case OrderStatus.DELIVERED:
+        bg = const Color(0xffEAF7ED);
+        fg = const Color(0xff2E7D32);
+        break;
+      case OrderStatus.CANCELLED:
+        bg = const Color(0xffFFEBEE);
+        fg = const Color(0xffC62828);
+        break;
     }
 
     return Container(
@@ -371,7 +403,7 @@ class _OrdersscrenState extends State<Ordersscren> {
           CircleAvatar(radius: 3.r, backgroundColor: fg),
           SizedBox(width: 4.w),
           Text(
-            status,
+            status.name,
             style: GoogleFonts.poppins(
               fontSize: 9.sp,
               fontWeight: FontWeight.w600,
@@ -381,20 +413,5 @@ class _OrdersscrenState extends State<Ordersscren> {
         ],
       ),
     );
-  }
-
-  // --- Payment Status Color Helper ---
-  Color _getPaymentStatusColor(String paymentStatus) {
-    switch (paymentStatus.toLowerCase()) {
-      case 'paid':
-        return const Color(0xff2E7D32);
-      case 'partially paid':
-        return const Color(0xffB76E00);
-      case 'refunded':
-        return const Color(0xffC62828);
-      case 'pending':
-      default:
-        return const Color(0xff6C727F);
-    }
   }
 }

@@ -3,10 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/constants/Order_dummy_data.dart';
-import '../../../farmer/models/OrderModel.dart';
-
-
+import '../../../../core/models/OrderModel.dart';
+import '../../dummydata/OrderDummyList.dart';
 
 class Orderdetailscreen extends StatelessWidget {
   const Orderdetailscreen({required this.index, super.key});
@@ -21,7 +19,7 @@ class Orderdetailscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OrderModel order = orderslist[index];
+    final OrderModel order = mockOrderList[index];
 
     final currencyFormatter = NumberFormat.currency(
       locale: 'en_IN',
@@ -29,9 +27,9 @@ class Orderdetailscreen extends StatelessWidget {
       decimalDigits: 0,
     );
 
-    // Calculate subtotal and tax estimates based on total amount
-    final double subtotal = order.totalAmount / 1.05;
-    final double taxes = order.totalAmount - subtotal;
+    // Derived subtotal and tax calculation based on 5% GST
+    final double subtotal = order.totalPrice / 1.05;
+    final double taxes = order.totalPrice - subtotal;
 
     return Scaffold(
       backgroundColor: scaffoldBg,
@@ -53,8 +51,6 @@ class Orderdetailscreen extends StatelessWidget {
           ),
         ),
       ),
-
-      // Download Invoice Button
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         color: Colors.white,
@@ -84,7 +80,7 @@ class Orderdetailscreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         child: Column(
           children: [
-            // Status & Payment Tag Card
+            // Status & Lifecycle Card
             _buildStatusCard(order),
             SizedBox(height: 12.h),
 
@@ -109,26 +105,57 @@ class Orderdetailscreen extends StatelessWidget {
     );
   }
 
-  // --- 1. Status & Payment Card ---
+  // --- 1. Status & Lifecycle Card ---
   Widget _buildStatusCard(OrderModel order) {
+    Color statusColor;
+    IconData statusIcon;
+
+    switch (order.status) {
+      case OrderStatus.PENDING:
+        statusColor = const Color(0xffB76E00);
+        statusIcon = Icons.access_time_rounded;
+        break;
+      case OrderStatus.CONFIRMED:
+        statusColor = const Color(0xff1565C0);
+        statusIcon = Icons.check_circle_outline;
+        break;
+      case OrderStatus.PROCESSING:
+        statusColor = const Color(0xff7B1FA2);
+        statusIcon = Icons.inventory_2_outlined;
+        break;
+      case OrderStatus.SHIPPED:
+        statusColor = const Color(0xff283593);
+        statusIcon = Icons.local_shipping_outlined;
+        break;
+      case OrderStatus.DELIVERED:
+        statusColor = const Color(0xff2E7D32);
+        statusIcon = Icons.task_alt_rounded;
+        break;
+      case OrderStatus.CANCELLED:
+        statusColor = const Color(0xffC62828);
+        statusIcon = Icons.cancel_outlined;
+        break;
+    }
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Status text
           Text(
-            "STATUS",
+            "ORDER STATUS",
             style: GoogleFonts.poppins(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
@@ -136,26 +163,23 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
-          // Order Status
           Row(
             children: [
-              const Icon(Icons.check_circle, color: Color(0xff2E7D32), size: 16),
+              Icon(statusIcon, color: statusColor, size: 18.sp),
               SizedBox(width: 6.w),
-              // order status
               Text(
-                order.status,
+                order.status.name,
                 style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
-                  color: textDark,
+                  color: statusColor,
                 ),
               ),
             ],
           ),
           SizedBox(height: 10.h),
-          // Payment Text
           Text(
-            "PAYMENT",
+            "FULFILLMENT",
             style: GoogleFonts.poppins(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
@@ -163,19 +187,20 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
-          // Payment Status
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
             decoration: BoxDecoration(
-              color: const Color(0xffE2EAF8),
+              color: statusColor.withOpacity(0.12),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Text(
-              order.paymentStatus == "Paid" ? "Paid in full" : order.paymentStatus,
+              order.status == OrderStatus.DELIVERED
+                  ? "Completed & Delivered"
+                  : "Status: ${order.status.name}",
               style: GoogleFonts.poppins(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w500,
-                color: const Color(0xff3B5998),
+                color: statusColor,
               ),
             ),
           ),
@@ -186,23 +211,26 @@ class Orderdetailscreen extends StatelessWidget {
 
   // --- 2. Order Information Card ---
   Widget _buildOrderInfoCard(OrderModel order) {
+    final formattedCreated = DateFormat('dd MMM yyyy, hh:mm a').format(order.createdAt);
+    final formattedUpdated = DateFormat('dd MMM yyyy, hh:mm a').format(order.updatedAt);
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          //Order Information Text
           Text(
             "Order Information",
             style: GoogleFonts.poppins(
@@ -212,8 +240,6 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-
-          //Order Id & Order Date
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -222,24 +248,10 @@ class Orderdetailscreen extends StatelessWidget {
                 children: [
                   Text("Order ID", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
                   Text(
-                    "#${order.orderId}",
+                    "#${order.id}",
                     style: GoogleFonts.poppins(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       fontWeight: FontWeight.w600,
-                      color: textDark,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Order Date", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
-                  Text(
-                    order.orderDate,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
                       color: textDark,
                     ),
                   ),
@@ -248,19 +260,36 @@ class Orderdetailscreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-
-          //Due Date
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Due Date", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
-              Text(
-                order.dueDate,
-                style: GoogleFonts.poppins(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: textDark,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Created At", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
+                  Text(
+                    formattedCreated,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                      color: textDark,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text("Last Updated", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
+                  Text(
+                    formattedUpdated,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                      color: textDark,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -277,16 +306,17 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Product Details Text
           Text(
             "Product Details",
             style: GoogleFonts.poppins(
@@ -299,11 +329,10 @@ class Orderdetailscreen extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(6.r),
-                child: Image.asset(
-                  order.product.image,
+                child: Image.network(
+                  order.imageUrl,
                   width: 58.r,
                   height: 58.r,
                   fit: BoxFit.cover,
@@ -316,33 +345,26 @@ class Orderdetailscreen extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 12.w),
-
-              //Product Name , Grade ND Quantity container
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Name
                     Text(
-                      order.product.name,
+                      order.name.toUpperCase(),
                       style: GoogleFonts.poppins(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                         color: textDark,
                       ),
                     ),
-
-                    //Grade
                     Text(
-                      order.product.grade,
+                      "Product ID: #${order.productId.length > 8 ? order.productId.substring(order.productId.length - 8) : order.productId}",
                       style: GoogleFonts.poppins(
-                        fontSize: 11.sp,
+                        fontSize: 10.sp,
                         color: textMuted,
                       ),
                     ),
                     SizedBox(height: 6.h),
-
-                    //Quantity
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                       decoration: BoxDecoration(
@@ -350,7 +372,7 @@ class Orderdetailscreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
-                        "Qty: ${order.quantity} ${order.quantityUnit}",
+                        "Qty: ${order.quantity} ${order.unit} @ ₹${order.pricePerUnit.toStringAsFixed(0)}/${order.unit}",
                         style: GoogleFonts.poppins(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w500,
@@ -376,16 +398,17 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //Buyer Information Text
           Text(
             "Buyer Information",
             style: GoogleFonts.poppins(
@@ -395,16 +418,13 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-
-          // logo and Buyer Name
           Row(
             children: [
-
               CircleAvatar(
                 radius: 18.r,
                 backgroundColor: accentOrange,
                 child: Text(
-                  order.buyer.name.isNotEmpty ? order.buyer.name[0] : "B",
+                  "B",
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -413,15 +433,12 @@ class Orderdetailscreen extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.w),
-
-              //Buyer Name
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Buyer name
                     Text(
-                      order.buyer.name,
+                      "Buyer ID: #${order.buyerId}",
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -429,7 +446,7 @@ class Orderdetailscreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Verified Corporate Buyer",
+                      "Verified Platform Buyer",
                       style: GoogleFonts.poppins(
                         fontSize: 10.sp,
                         color: textMuted,
@@ -458,16 +475,17 @@ class Orderdetailscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //Payment Summary text
           Text(
             "Payment Summary",
             style: GoogleFonts.poppins(
@@ -477,13 +495,11 @@ class Orderdetailscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-
-          // SubTotal
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Subtotal (${order.quantity} ${order.quantityUnit})",
+                "Subtotal (${order.quantity} ${order.unit})",
                 style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted),
               ),
               Text(
@@ -497,12 +513,11 @@ class Orderdetailscreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8.h),
-          // taxes & Fees
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Taxes & Fees (GST 5%)",
+                "Taxes & GST (5%)",
                 style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted),
               ),
               Text(
@@ -511,6 +526,28 @@ class Orderdetailscreen extends StatelessWidget {
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
                   color: textDark,
+                ),
+              ),
+            ],
+          ),
+          const Divider(height: 18, thickness: 0.6),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Total Paid",
+                style: GoogleFonts.poppins(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  color: textDark,
+                ),
+              ),
+              Text(
+                formatter.format(order.totalPrice),
+                style: GoogleFonts.poppins(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.bold,
+                  color: primaryBrown,
                 ),
               ),
             ],
