@@ -1,21 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/Widgets/Iconcart.dart';
-import '../../../../core/constants/produce_dummy_data.dart';
-import '../../../farmer/models/produce_model.dart';
-
-
-
+import '../../../../core/models/ProductModel.dart';
+import '../../dummydata/ProductListingDummyData.dart';
 
 class Producedetailsscreen extends StatelessWidget {
   Producedetailsscreen({required this.index, super.key});
 
   final int index;
-  late final ProduceModel produce = produceslist[index];
+  late final ProductModel product = mockProductList[index];
 
   static const Color primaryBrown = Color(0xff964900);
   static const Color accentOrange = Color(0xffE07525);
@@ -26,16 +22,16 @@ class Producedetailsscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // currency formater
     final currencyFormatter = NumberFormat.currency(
       locale: 'en_IN',
       symbol: '₹',
       decimalDigits: 0,
     );
 
-    // available storage space ratio
-    final double usageRatio = produce.volume / produce.details.storageCapacity;
-    final int usagePercent = (usageRatio * 100).toInt();
+    final bool isActive = product.active ?? false;
+    final bool hasStock = (product.quantity ?? 0) > 0;
+    final double totalEstimatedValue =
+    ((product.price ?? 0) * (product.quantity ?? 0)).toDouble();
 
     return Scaffold(
       backgroundColor: scaffoldBg,
@@ -47,7 +43,7 @@ class Producedetailsscreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Produce Details",
+          "Product Details",
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w600,
@@ -55,7 +51,6 @@ class Producedetailsscreen extends StatelessWidget {
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
@@ -63,12 +58,12 @@ class Producedetailsscreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Top Image with Status Badge
-            _buildHeroImage(),
+            _buildHeroImage(isActive, hasStock),
             SizedBox(height: 12.h),
 
             // Title
             Text(
-              produce.name,
+              product.name ?? 'Unnamed Product',
               style: GoogleFonts.poppins(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -76,9 +71,9 @@ class Producedetailsscreen extends StatelessWidget {
               ),
             ),
 
-            // Grade & Variety
+            // Category & Seller Reference
             Text(
-              "${produce.grade} • ${produce.details.variety}",
+              "Category: ${product.category ?? 'General'} • Unit: ${product.unit ?? 'N/A'}",
               style: GoogleFonts.poppins(
                 fontSize: 12.sp,
                 color: textMuted,
@@ -86,42 +81,42 @@ class Producedetailsscreen extends StatelessWidget {
             ),
             SizedBox(height: 14.h),
 
-            // Volume & Average Price Cards
+            // Available Quantity & Average Price Cards
             Row(
               children: [
-                // Total Volume
+                // Total Volume Available
                 Expanded(
                   child: _buildMetricCard(
-                    icon: Icons.hourglass_bottom_outlined,
-                    label: "Total Volume",
-                    value: "${produce.volume} ${produce.volumeUnit[0].toUpperCase()}${produce.volumeUnit.substring(1)}",
+                    icon: Icons.inventory_2_outlined,
+                    label: "Available Stock",
+                    value: "${product.quantity ?? 0} ${product.unit ?? ''}",
                   ),
                 ),
-
                 SizedBox(width: 12.w),
 
-                // Average Price
+                // Unit Price
                 Expanded(
                   child: _buildMetricCard(
                     icon: Icons.payments_outlined,
-                    label: "Average Price",
-                    value: "${currencyFormatter.format(produce.details.averagePrice)} / qtl",
+                    label: "Unit Price",
+                    value:
+                    "${currencyFormatter.format(product.price ?? 0)} / ${product.unit ?? 'Unit'}",
                   ),
                 ),
               ],
             ),
             SizedBox(height: 12.h),
 
-            // Farmers Contributing Card
-            _buildContributingFarmersCard(),
+            // Inventory Valuation Card
+            _buildInventoryValuationCard(currencyFormatter.format(totalEstimatedValue)),
             SizedBox(height: 12.h),
 
-            // Lot Details Table Card
-            _buildLotDetailsCard(),
+            // Product Specifications Table Card
+            _buildProductDetailsCard(),
             SizedBox(height: 12.h),
 
-            // Storage Location & Capacity Card
-            _buildStorageLocationCard(usageRatio, usagePercent),
+            // Description Card
+            _buildDescriptionCard(),
             SizedBox(height: 16.h),
           ],
         ),
@@ -130,21 +125,42 @@ class Producedetailsscreen extends StatelessWidget {
   }
 
   // --- Hero Banner Image ---
-  Widget _buildHeroImage() {
+  Widget _buildHeroImage(bool isActive, bool hasStock) {
     return Stack(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12.r),
-          child: Image.asset(
-            produce.image,
+          child: Image.network(
+            product.imageUrl ?? '',
             width: double.infinity,
-            height: 150.h,
+            height: 160.h,
             fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                height: 160.h,
+                width: double.infinity,
+                color: cardSubBg,
+                child: const Center(
+                  child: CircularProgressIndicator(color: primaryBrown),
+                ),
+              );
+            },
             errorBuilder: (context, error, stackTrace) => Container(
-              height: 150.h,
+              height: 160.h,
               width: double.infinity,
               color: const Color(0xffECEFEF),
-              child: const Icon(Icons.eco, color: primaryBrown, size: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.eco, color: primaryBrown, size: 40.sp),
+                  SizedBox(height: 6.h),
+                  Text(
+                    "Image not available",
+                    style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -152,22 +168,34 @@ class Producedetailsscreen extends StatelessWidget {
           top: 10.h,
           right: 10.w,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withOpacity(0.95),
               borderRadius: BorderRadius.circular(14.r),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.check_circle, size: 12, color: Color(0xff2E7D32)),
+                Icon(
+                  !isActive
+                      ? Icons.cancel
+                      : (hasStock ? Icons.check_circle : Icons.warning),
+                  size: 13.sp,
+                  color: !isActive
+                      ? Colors.red
+                      : (hasStock ? const Color(0xff2E7D32) : Colors.orange),
+                ),
                 SizedBox(width: 4.w),
                 Text(
-                  produce.status,
+                  !isActive
+                      ? "Inactive"
+                      : (hasStock ? "Available" : "Out of Stock"),
                   style: GoogleFonts.poppins(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff2E7D32),
+                    color: !isActive
+                        ? Colors.red
+                        : (hasStock ? const Color(0xff2E7D32) : Colors.orange),
                   ),
                 ),
               ],
@@ -189,16 +217,18 @@ class Producedetailsscreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Iconcart(icon: icon, iconsize: 18.sp, color:primaryBrown,),
+          Iconcart(icon: icon, iconsize: 18.sp, color: primaryBrown),
           SizedBox(height: 10.h),
           Text(
             label,
@@ -221,45 +251,44 @@ class Producedetailsscreen extends StatelessWidget {
     );
   }
 
-  // --- Farmers Contributing Row ---
-  Widget _buildContributingFarmersCard() {
+  // --- Total Inventory Valuation Row ---
+  Widget _buildInventoryValuationCard(String formattedTotal) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 18.r,
             backgroundColor: accentOrange,
-            child: const Icon(Icons.group_outlined, color: Colors.white, size: 18),
+            child: const Icon(Icons.account_balance_wallet_outlined,
+                color: Colors.white, size: 18),
           ),
           SizedBox(width: 10.w),
-
-          // farmer Count & Contributing to this Slot Text
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // farmer count
                 Text(
-                  "${produce.contributingFarmers} Farmers",
+                  formattedTotal,
                   style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
                     color: textDark,
                   ),
                 ),
-                // Contributing to this slot text
                 Text(
-                  "Contributing to this lot",
+                  "Estimated Total Stock Valuation",
                   style: GoogleFonts.poppins(
                     fontSize: 10.sp,
                     color: textMuted,
@@ -268,46 +297,31 @@ class Producedetailsscreen extends StatelessWidget {
               ],
             ),
           ),
-          // View Text Button
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(0, 0),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: Text(
-              "View",
-              style: GoogleFonts.poppins(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w600,
-                color: primaryBrown,
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 
-  // --- Lot Details Table ---
-  Widget _buildLotDetailsCard() {
+  // --- Product Specifications Table ---
+  Widget _buildProductDetailsCard() {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "LOT DETAILS",
+            "PRODUCT DETAILS",
             style: GoogleFonts.poppins(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
@@ -315,11 +329,20 @@ class Producedetailsscreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
-          _buildDetailRow("Variety", produce.details.variety),
+          _buildDetailRow("Product ID", product.id ?? 'N/A'),
           const Divider(height: 18, thickness: 0.6),
-          _buildDetailRow("Harvest Season", produce.details.harvestSeason),
+          _buildDetailRow("Category", product.category ?? 'N/A'),
           const Divider(height: 18, thickness: 0.6),
-          _buildDetailRow("Grade", produce.grade),
+          _buildDetailRow("Unit Type", product.unit ?? 'N/A'),
+          const Divider(height: 18, thickness: 0.6),
+          _buildDetailRow("Seller ID", product.sellerId ?? 'N/A'),
+          const Divider(height: 18, thickness: 0.6),
+          _buildDetailRow(
+            "Listed Date",
+            product.createdAt != null
+                ? product.createdAt!.split("T").first
+                : "Recent",
+          ),
         ],
       ),
     );
@@ -345,29 +368,31 @@ class Producedetailsscreen extends StatelessWidget {
     );
   }
 
-  // --- Storage Location Card ---
-  Widget _buildStorageLocationCard(double usageRatio, int usagePercent) {
+  // --- Product Description Card ---
+  Widget _buildDescriptionCard() {
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 5,
             spreadRadius: 1,
-          )]
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Storage Location icon & Text
           Row(
             children: [
-              Icon(Icons.warehouse_outlined, size: 16.sp, color: textDark),
+              Icon(Icons.notes_rounded, size: 16.sp, color: textDark),
               SizedBox(width: 6.w),
               Text(
-                "Storage Location",
+                "Description",
                 style: GoogleFonts.poppins(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
@@ -376,60 +401,13 @@ class Producedetailsscreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 6.h),
-
-          // Storage Location Name
+          SizedBox(height: 8.h),
           Text(
-            produce.details.storageLocation,
+            product.description ?? "No description provided for this product.",
             style: GoogleFonts.poppins(
               fontSize: 11.sp,
               color: textMuted,
-            ),
-          ),
-          SizedBox(height: 12.h),
-
-          // Capacity usage
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Capacity Usage",
-                style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted),
-              ),
-              Text(
-                "${produce.volume.toInt()} / ${produce.details.storageCapacity.toInt()} ${produce.details.storageUnit}",
-                style: GoogleFonts.poppins(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w600,
-                  color: textDark,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 6.h),
-
-          // Linear Progress indicator
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6.r),
-            child: LinearProgressIndicator(
-              value: usageRatio.clamp(0.0, 1.0),
-              backgroundColor: const Color(0xffECEFEF),
-              valueColor: const AlwaysStoppedAnimation<Color>(primaryBrown),
-              minHeight: 6.h,
-            ),
-          ),
-          SizedBox(height: 6.h),
-
-          // Percentage
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              "$usagePercent% Full",
-              style: GoogleFonts.poppins(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w500,
-                color: textMuted,
-              ),
+              height: 1.4,
             ),
           ),
         ],
