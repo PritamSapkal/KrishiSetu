@@ -4,18 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../core/Widgets/DashBoardOverviewCart.dart';
 import '../../../../core/Widgets/QuickActionCart.dart';
 import '../../../../core/Widgets/customTitle.dart';
-import '../../../../core/constants/Order_dummy_data.dart';
-import '../../../../core/constants/farmer_dummy_data.dart';
-import '../../../../core/constants/fpo_dummy_data.dart';
-import '../../../../core/constants/listing_dummy_data.dart';
+import '../../dummydata/MockFpoData.dart';
+import '../../dummydata/OrderDummyList.dart';
+import '../../dummydata/ProductListingDummyData.dart';
+import '../../dummydata/farmer_dummy_data.dart';
 import '../../../../core/utils/GreetingFunction.dart';
 import '../../../../features/fpo/viewmodels/FPO_totalproducesProvider.dart';
-import '../../../entry/viewmodels/IndexHandlingProvider.dart';
 import '../../../farmer/viewmodels/bottomAppbarIndexProvider.dart';
+import '../../models/FpoAuthModel.dart';
+import '../../models/FpoProfileModel.dart';
 
 
 class Homescreen extends ConsumerStatefulWidget{
@@ -24,6 +24,12 @@ class Homescreen extends ConsumerStatefulWidget{
 }
 
 class _HomescreenState extends ConsumerState<Homescreen> {
+
+  // Dummy Data
+  FpoAuthModel fpoData = MockFpoData.mockFpoAuth;
+  FpoProfileModel fpoProfile = MockFpoData.mockFpoProfile;
+   var listingProductsCount=mockProductList.length;
+
   @override
   Widget build(BuildContext context) {
 
@@ -39,7 +45,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
              Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xff9E551B),
+                color:  Color(0xff964900),
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.r),bottomRight: Radius.circular(20.r)),
               ),
               child: Padding(
@@ -47,15 +53,15 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                      Text(getGreeting()+" ,",style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20.sp),),
-                      Text(fpoData.name+" FPO",style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20.sp),),
+                      Text("${getGreeting()} ,",style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20.sp),),
+                      Text(fpoProfile.fpoName.toString(),style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20.sp),),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Row(
                           children: [
                             FaIcon(FontAwesomeIcons.locationDot,color: Colors.white.withOpacity(0.8),size: 12.sp,),
                              SizedBox(width: 3.w,),
-                            Text(fpoData.district+" District,"+fpoData.state,style: GoogleFonts.poppins(color: Colors.white.withOpacity(0.8),fontWeight: FontWeight.bold,)),
+                            Text("${fpoProfile.district} District,${fpoProfile.state}",style: GoogleFonts.poppins(color: Colors.white.withOpacity(0.8),fontWeight: FontWeight.bold,)),
                           ],
                         ),
                       )
@@ -64,7 +70,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
               ),
             ),
 
-            // Dashboard Overview title
+            // Dashboard Overview title Text
             Padding(
               padding: const EdgeInsets.fromLTRB(15,20,15,10),
               child: Customtitle(title:"Dashboard Overview",size: 15.sp,),
@@ -109,8 +115,10 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     //Listings
                     InkWell(
                       borderRadius:BorderRadius.circular(20),
-                      onTap: (){},
-                      child: Dashboardoverviewcart(carttitle:"Listings" ,icon:Icons.list_outlined ,iconColor:Color(0xff0277BD) ,widget: Customtitle(title: listingslist.length.toString(),size: 25.sp,),),
+                      onTap: (){
+                        ref.read(BottomAppbarIndexProvider.notifier).update((state)=>1);
+                      },
+                      child: Dashboardoverviewcart(carttitle:"Listings" ,icon:Icons.list_outlined ,iconColor:Color(0xff0277BD) ,widget: Customtitle(title: listingProductsCount.toString(),size: 25.sp,),),
                     ),
 
                     //Sales
@@ -159,7 +167,9 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     // View Orders
                     InkWell(
                       borderRadius:BorderRadius.circular(20),
-                      onTap: (){},
+                      onTap: (){
+                        ref.read(BottomAppbarIndexProvider.notifier).update((state)=>2);
+                      },
                       child:Quickactioncart(icon:Icons.receipt_long_sharp ,iconcolor: Color(0xff964900),iconsize: 22.sp,label: "View Orders",),
                     ),
 
@@ -219,19 +229,17 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // order id
-                            Text(orderslist[index].orderId.toString(),style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.w700),),
+                            Text(" "+mockOrderList[index].id.toString(),style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.w700),),
 
                             // Product title
-                            Customtitle(title:orderslist[index].product.name,size:15.sp,),
+                            Customtitle(title:" "+mockOrderList[index].name,size:15.sp,),
 
                             // buyer name & due date
                             Row(mainAxisAlignment: MainAxisAlignment.start,
                              children: [
-                               Icon(Icons.store_sharp,color: Color(0xff585F6C),size:15.sp,),
-                               Text(" "+orderslist[index].buyer.name,style: GoogleFonts.poppins(color:Color(0xff585F6C) ),),
                                SizedBox(width: 5.w,),
-                               Icon(Icons.calendar_month_sharp,color: Color(0xff585F6C),size:15.sp),
-                               Text(" Due: "+orderslist[index].dueDate,style: GoogleFonts.poppins(color:Color(0xff585F6C) ),),
+                               Icon(Icons.access_time_rounded,color: Color(0xff585F6C),size:15.sp),
+                               Text(" "+mockOrderList[index].status.toString(),style: GoogleFonts.poppins(color:Color(0xff585F6C),fontSize: 10.sp ),),
                              ],
                              ),
                           ],
