@@ -16,6 +16,8 @@ import '../../../../features/fpo/viewmodels/FPO_totalproducesProvider.dart';
 import '../../../farmer/viewmodels/bottomAppbarIndexProvider.dart';
 import '../../models/FpoAuthModel.dart';
 import '../../models/FpoProfileModel.dart';
+import 'AddFarmerScreen.dart';
+import 'AddProduceScreen.dart';
 
 
 class Homescreen extends ConsumerStatefulWidget{
@@ -153,14 +155,18 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     // Add Produce
                     InkWell(
                       borderRadius:BorderRadius.circular(20),
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>Addproducescreen()));
+                      },
                       child:Quickactioncart(icon:Icons.add_box_outlined ,iconcolor: Color(0xff964900),iconsize: 22.sp,label: "Add Produce",),
                     ),
 
                     //Add Farmer
                     InkWell(
                       borderRadius:BorderRadius.circular(20),
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>AddNewFarmer()));
+                      },
                       child:Quickactioncart(icon:Icons.people_alt_outlined ,iconcolor: Color(0xff964900),iconsize: 22.sp,label: "Add Farmer",),
                     ),
 
