@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:krishisetu/features/fpo/views/screens/AddProduceScreen.dart';
 // Adjust path if needed
 import '../../../../core/models/ProductModel.dart';
 import '../../dummydata/ProductListingDummyData.dart';
+import '../../viewmodels/ProduceListRiverpod.dart';
 import 'produceDetailsScreen.dart';
 
-class Producescreen extends StatelessWidget {
+class Producescreen extends ConsumerStatefulWidget {
   const Producescreen({super.key});
 
   static const Color primaryBrown = Color(0xff8D4F1E);
@@ -15,15 +18,20 @@ class Producescreen extends StatelessWidget {
   static const Color textMuted = Color(0xff757575);
 
   @override
+  ConsumerState<Producescreen> createState() => _ProducescreenState();
+}
+
+class _ProducescreenState extends ConsumerState<Producescreen> {
+  @override
   Widget build(BuildContext context) {
     // Total stock quantity across all listed products
-    final double totalQuantity = mockProductList.fold(
+    final double totalQuantity = ref.watch(ProduceListProvider).fold(
       0.0,
           (sum, item) => sum + ((item.quantity ?? 0).toDouble()),
     );
 
     return Scaffold(
-      backgroundColor: scaffoldBg,
+      backgroundColor: Producescreen.scaffoldBg,
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
@@ -48,6 +56,11 @@ class Producescreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(context,MaterialPageRoute(builder: (context) => Addproducescreen(),));
+      },
+        backgroundColor: Color(0xff964900),
+        child: Center(child: Icon(Icons.add,color: Colors.white,),),),
     );
   }
 
@@ -77,7 +90,7 @@ class Producescreen extends StatelessWidget {
                 "Total Listed Inventory",
                 style: GoogleFonts.poppins(
                   fontSize: 11.sp,
-                  color: textMuted,
+                  color: Producescreen.textMuted,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -87,7 +100,7 @@ class Producescreen extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: primaryBrown,
+                  color: Producescreen.primaryBrown,
                 ),
               ),
             ],
@@ -101,7 +114,7 @@ class Producescreen extends StatelessWidget {
             ),
             child: Icon(
               Icons.inventory_2_outlined,
-              color: primaryBrown,
+              color: Producescreen.primaryBrown,
               size: 22.sp,
             ),
           ),
@@ -153,7 +166,7 @@ class Producescreen extends StatelessWidget {
                       child: const Center(
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: primaryBrown,
+                          color: Producescreen.primaryBrown,
                         ),
                       ),
                     );
@@ -165,13 +178,13 @@ class Producescreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.eco, color: primaryBrown, size: 36.sp),
+                        Icon(Icons.eco, color: Producescreen.primaryBrown, size: 36.sp),
                         SizedBox(height: 4.h),
                         Text(
                           "No Preview Image",
                           style: GoogleFonts.poppins(
                             fontSize: 10.sp,
-                            color: textMuted,
+                            color: Producescreen.textMuted,
                           ),
                         ),
                       ],
@@ -231,7 +244,7 @@ class Producescreen extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
-                    color: textDark,
+                    color: Producescreen.textDark,
                   ),
                 ),
 
@@ -240,7 +253,7 @@ class Producescreen extends StatelessWidget {
                   "Category: ${product.category ?? 'Uncategorized'}",
                   style: GoogleFonts.poppins(
                     fontSize: 11.sp,
-                    color: textMuted,
+                    color: Producescreen.textMuted,
                   ),
                 ),
                 SizedBox(height: 12.h),
@@ -257,7 +270,7 @@ class Producescreen extends StatelessWidget {
                             "Available Stock",
                             style: GoogleFonts.poppins(
                               fontSize: 10.sp,
-                              color: textMuted,
+                              color: Producescreen.textMuted,
                             ),
                           ),
                           Text(
@@ -265,7 +278,7 @@ class Producescreen extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
-                              color: textDark,
+                              color: Producescreen.textDark,
                             ),
                           ),
                         ],
@@ -281,7 +294,7 @@ class Producescreen extends StatelessWidget {
                             "Unit Price",
                             style: GoogleFonts.poppins(
                               fontSize: 10.sp,
-                              color: textMuted,
+                              color: Producescreen.textMuted,
                             ),
                           ),
                           Text(
@@ -289,7 +302,7 @@ class Producescreen extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
-                              color: primaryBrown,
+                              color: Producescreen.primaryBrown,
                             ),
                           ),
                         ],
@@ -306,7 +319,7 @@ class Producescreen extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.poppins(
                     fontSize: 10.sp,
-                    color: textMuted,
+                    color: Producescreen.textMuted,
                   ),
                 ),
                 SizedBox(height: 14.h),
@@ -338,7 +351,7 @@ class Producescreen extends StatelessWidget {
                           style: GoogleFonts.poppins(
                             fontSize: 11.sp,
                             fontWeight: FontWeight.w600,
-                            color: primaryBrown,
+                            color: Producescreen.primaryBrown,
                           ),
                         ),
                       ),
@@ -350,7 +363,7 @@ class Producescreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryBrown,
+                          backgroundColor: Producescreen.primaryBrown,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.r),

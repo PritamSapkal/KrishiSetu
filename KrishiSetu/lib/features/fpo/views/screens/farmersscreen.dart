@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/Widgets/customTitle.dart';
 import '../../models/farmer_model.dart';
 import '../../../../features/fpo/viewmodels/famerlistProvider.dart';
+import 'AddFarmerScreen.dart';
 import 'FarmerDetailsPage.dart';
 
 class Farmersscreen extends ConsumerStatefulWidget {
@@ -37,7 +38,7 @@ class _FarmersscreenState extends ConsumerState<Farmersscreen> {
             child: TextField(
               controller: farmername,
               onChanged: (name) {
-                ref.read(farmerFilteredListProvider.notifier).filterBySearch(name);
+                ref.read(farmerSearchQueryProvider.notifier).state = name;
               },
               style: TextStyle(color: Colors.black),
               autocorrect: true,
@@ -115,6 +116,11 @@ class _FarmersscreenState extends ConsumerState<Farmersscreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(context,MaterialPageRoute(builder: (context) => AddNewFarmer(),));
+      },
+        backgroundColor: Color(0xff964900),
+        child: Center(child: Icon(Icons.add,color: Colors.white,),),),
     );
   }
 }
