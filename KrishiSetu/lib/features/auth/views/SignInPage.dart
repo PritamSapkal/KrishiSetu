@@ -44,7 +44,7 @@ class _SigninpageState extends ConsumerState<Signinpage> {
           body:jsonEncode({
       "email":email,
       "password":password,
-      })).timeout(Duration(seconds: 10));
+      })).timeout(Duration(seconds: 5));
 
       if(response.statusCode==200||response.statusCode==201){
         var data=jsonDecode(response.body.toString());
