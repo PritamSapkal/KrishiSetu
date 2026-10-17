@@ -1,38 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../dummydata/farmer_dummy_data.dart';
 import '../models/farmer_model.dart';
 
-// Base list provider
-final farmerListProvider = Provider<List<FarmerModel>>((ref) {
+
+final farmerListProvider = StateProvider<List<FarmerModel>>((ref) {
   return farmerslist;
 });
 
-class FarmerFilteredListNotifier extends StateNotifier<List<FarmerModel>> {
-  final Ref ref;
 
-  FarmerFilteredListNotifier(this.ref) : super(ref.read(farmerListProvider));
+final farmerSearchQueryProvider = StateProvider<String>((ref) => '');
 
-  // Search farmers by name or phone
-  void filterBySearch(String query) {
-    final allFarmers = ref.read(farmerListProvider);
-    if (query.trim().isEmpty) {
-      state = allFarmers;
-    }
-    else {
-      state = allFarmers.where((farmer) =>
-        farmer.fullName.toLowerCase().contains(query.toLowerCase())).toList();
-    }
+// 3. Computed / derived filtered list (recomputes automatically on any change)
+final farmerFilteredListProvider = Provider<List<FarmerModel>>((ref) {
+  final allFarmers = ref.watch(farmerListProvider);
+  final query = ref.watch(farmerSearchQueryProvider).trim().toLowerCase();
+
+  if (query.isEmpty) {
+    return allFarmers;
   }
 
-
-  // Reset to original list
-  void resetFilter() {
-    state = ref.read(farmerListProvider);
-  }
-}
-
-// StateNotifierProvider exposing the notifier
-final farmerFilteredListProvider = StateNotifierProvider<FarmerFilteredListNotifier, List<FarmerModel>>((ref) {
-  return FarmerFilteredListNotifier(ref);
+  return allFarmers
+      .where((farmer) => farmer.fullName.toLowerCase().contains(query))
+      .toList();
 });
