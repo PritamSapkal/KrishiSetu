@@ -4,8 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../viewmodels/BottomIndexRiverpod.dart';
+import 'HomeScreen.dart';
+import 'MemmberScreen.dart';
+import 'OrderScreen.dart';
+import 'ProduceScreen.dart';
+import 'ProfileScreen.dart';
 
 class ShgDashboard extends ConsumerStatefulWidget{
   @override
@@ -13,25 +17,41 @@ class ShgDashboard extends ConsumerStatefulWidget{
 }
 
 class _ShgDashboardState extends ConsumerState<ShgDashboard> {
+  final List<String> _appbartitlelist = [
+    "KrishiSetu",
+    "Produce",
+    "Orders",
+    "Members",
+    "Profile",
+  ];
   @override
   Widget build(BuildContext context) {
     Color Primarycolor=Color(0xff880D4F);
     Color backgrounColor=const Color(0xffF8F9FA);
-    int _bottomappbarindex=ref.watch(BottomIndexProvider);
+    int _bottomappbarindex=ref.watch(ShgBottomIndexProvider);
     return Scaffold(
       backgroundColor: backgrounColor,
       appBar: AppBar(
         backgroundColor:Color(0xff880D4F),
         foregroundColor: Colors.white,
-        title: Text("SHG Dashboard!",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),),
+        title: Text(_appbartitlelist[_bottomappbarindex],style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),),
       ),
-      body: Container(),
+      body:IndexedStack(
+        index: _bottomappbarindex,
+        children: [
+          ShgHomescreen(),
+          SHGProducescreen(),
+          SHGOrderScreen(),
+          SHGMemmberscreen(),
+          SHGProfilescreen(),
+        ],
+      ),
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _bottomappbarindex,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          ref.read(BottomIndexProvider.notifier).update((state) => index);
+          ref.read(ShgBottomIndexProvider.notifier).update((state) => index);
         },
         items: [
           const BottomNavigationBarItem(
