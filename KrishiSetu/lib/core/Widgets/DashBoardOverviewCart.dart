@@ -33,9 +33,9 @@ class Dashboardoverviewcart extends StatelessWidget{
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
-                  child: Text(carttitle,style: GoogleFonts.poppins(color: Color(0xff59606C),fontWeight: FontWeight.w600,fontSize: 12.sp),),
+                  child: Text(carttitle,style: GoogleFonts.poppins(color: Color(0xff59606C),fontWeight: FontWeight.w600,fontSize: 12.sp,),overflow: TextOverflow.ellipsis,),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 8),
                   child: Iconcart(icon:icon,iconsize:20.sp,color: iconColor,),

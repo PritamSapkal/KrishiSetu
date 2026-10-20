@@ -29,7 +29,10 @@ class Quickactioncart extends StatelessWidget{
           Row(
             children: [
               Spacer(),
-              Iconcart(icon: icon,color:iconcolor ,iconsize: iconsize,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Iconcart(icon: icon,color:iconcolor ,iconsize: iconsize,),
+              ),
               Spacer(),
             ],
           ),
