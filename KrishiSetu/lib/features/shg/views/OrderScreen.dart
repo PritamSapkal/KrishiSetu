@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/models/OrderModel.dart';
 import '../dummydata/Shg_OrderDummyList.dart';
-import 'SHGOrderDetailScreen.dart';
+import 'SHGOrderManageScreen.dart';
 class SHGOrderScreen extends StatefulWidget {
   const SHGOrderScreen({super.key});
 
@@ -300,7 +300,7 @@ class _SHGOrderScreenState extends State<SHGOrderScreen> {
 
           SizedBox(height: 12.h),
 
-          // Rate per Unit & View Details Button
+          // Rate per Unit & Manage Order Button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -327,7 +327,7 @@ class _SHGOrderScreenState extends State<SHGOrderScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SHGOrderDetailScreen(orderId: order.id),
+                      builder: (context) => SHGOrderManageScreen(orderId: order.id),
                     ),
                   );
                 },
@@ -340,7 +340,7 @@ class _SHGOrderScreenState extends State<SHGOrderScreen> {
                   minimumSize: Size(0, 30.h),
                 ),
                 child: Text(
-                  "View Details",
+                  "Manage Order",
                   style: GoogleFonts.poppins(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w600,
