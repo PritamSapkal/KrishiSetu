@@ -5,9 +5,22 @@ import '../dummydata/mock_processor_orders.dart';
 
 class Processororderlistriverpod extends StateNotifier<List<OrderModel>> {
   Processororderlistriverpod() : super(mockProcessorOrderList);
+
+  void updateOrderStatus(String orderId, OrderStatus newStatus) {
+    state = [
+      for (final order in state)
+        if (order.id == orderId)
+          order.copyWith(
+            status: newStatus,
+            updatedAt: DateTime.now(),
+          )
+        else
+          order,
+    ];
+  }
 }
 
-var ProcessororderlistProvider =
-    StateNotifierProvider<Processororderlistriverpod, List<OrderModel>>(
+final ProcessororderlistProvider =
+StateNotifierProvider<Processororderlistriverpod, List<OrderModel>>(
       (ref) => Processororderlistriverpod(),
-    );
+);
