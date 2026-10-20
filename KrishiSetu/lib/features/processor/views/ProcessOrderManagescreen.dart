@@ -489,11 +489,14 @@ class ProcessOrderManagescreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+
                 Text(
                   "Select the current operational state for #${order.id.substring(order.id.length - 8)}",
                   style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted),
                 ),
+
                 SizedBox(height: 14.h),
+
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 10.h,
@@ -524,7 +527,7 @@ class ProcessOrderManagescreen extends ConsumerWidget {
                                 "Order status updated to ${status.name}!",
                                 style: GoogleFonts.poppins(color: Colors.white),
                               ),
-                              backgroundColor: const Color(0xff2E7D32),
+                              backgroundColor: const  Color(0xff4A148C),
                             ),
                           );
                         }
