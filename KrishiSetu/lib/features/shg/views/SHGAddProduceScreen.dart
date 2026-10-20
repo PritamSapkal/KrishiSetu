@@ -392,6 +392,8 @@ class _SHGAddProduceScreenState extends ConsumerState<SHGAddProduceScreen> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
+          dropdownColor: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20.r)),
           value: value,
           isExpanded: true,
           icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
