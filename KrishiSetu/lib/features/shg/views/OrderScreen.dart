@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/models/OrderModel.dart';
 import '../dummydata/Shg_OrderDummyList.dart';
+import '../viewmodels/SHGOrderListRiverpod.dart';
 import 'SHGOrderManageScreen.dart';
-class SHGOrderScreen extends StatefulWidget {
+class SHGOrderScreen extends ConsumerStatefulWidget {
   const SHGOrderScreen({super.key});
 
   @override
-  State<SHGOrderScreen> createState() => _SHGOrderScreenState();
+  ConsumerState<SHGOrderScreen> createState() => _SHGOrderScreenState();
 }
 
-class _SHGOrderScreenState extends State<SHGOrderScreen> {
+class _SHGOrderScreenState extends ConsumerState<SHGOrderScreen> {
   static const Color primaryColor = Color(0xff880D4F);
   static const Color scaffoldBg = Color(0xffF8F9FA);
   static const Color textDark = Color(0xff1E1E1E);
@@ -31,7 +33,7 @@ class _SHGOrderScreenState extends State<SHGOrderScreen> {
   @override
   Widget build(BuildContext context) {
     // Filter list based on selected category tab
-    final filteredOrders = mockShgOrderList.where((order) {
+    final filteredOrders = ref.watch(ShgorderlistProvider).where((order) {
       if (selectedTab == "All") return true;
       if (selectedTab == "Pending") return order.status == OrderStatus.PENDING;
       if (selectedTab == "Active") {
