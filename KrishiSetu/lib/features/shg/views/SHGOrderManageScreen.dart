@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/models/OrderModel.dart';
-import '../dummydata/Shg_OrderDummyList.dart';
+import '../viewmodels/SHGOrderListRiverpod.dart';
 
-class SHGOrderDetailScreen extends StatelessWidget {
+class SHGOrderManageScreen extends ConsumerStatefulWidget {
   final String orderId;
 
-  const SHGOrderDetailScreen({required this.orderId, super.key});
+  const SHGOrderManageScreen({required this.orderId, super.key});
 
   static const Color primaryColor = Color(0xff880D4F);
   static const Color scaffoldBg = Color(0xffF8F9FA);
@@ -18,10 +19,18 @@ class SHGOrderDetailScreen extends StatelessWidget {
   static const Color cardSubBg = Color(0xffFAF0E6);
 
   @override
+  ConsumerState<SHGOrderManageScreen> createState() =>
+      _SHGOrderManageScreenState();
+}
+
+class _SHGOrderManageScreenState extends ConsumerState<SHGOrderManageScreen> {
+  @override
   Widget build(BuildContext context) {
-    // Look up the order directly by orderId
-    final OrderModel? order = mockShgOrderList.cast<OrderModel?>().firstWhere(
-          (o) => o?.id == orderId,
+    // Look up the order live from ShgorderlistProvider
+    final List<OrderModel> orders = ref.watch(ShgorderlistProvider);
+
+    final OrderModel? order = orders.cast<OrderModel?>().firstWhere(
+          (o) => o?.id == widget.orderId,
       orElse: () => null,
     );
 
@@ -33,19 +42,21 @@ class SHGOrderDetailScreen extends StatelessWidget {
 
     if (order == null) {
       return Scaffold(
-        backgroundColor: scaffoldBg,
+        backgroundColor: SHGOrderManageScreen.scaffoldBg,
         appBar: AppBar(
-          backgroundColor: primaryColor,
+          backgroundColor: SHGOrderManageScreen.primaryColor,
           foregroundColor: Colors.white,
           title: Text(
             "Order Not Found",
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16.sp),
+            style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold, fontSize: 16.sp),
           ),
         ),
         body: Center(
           child: Text(
-            "Order #$orderId could not be found.",
-            style: GoogleFonts.poppins(color: textMuted, fontSize: 13.sp),
+            "Order #${widget.orderId} could not be found.",
+            style: GoogleFonts.poppins(
+                color: SHGOrderManageScreen.textMuted, fontSize: 13.sp),
           ),
         ),
       );
@@ -56,10 +67,9 @@ class SHGOrderDetailScreen extends StatelessWidget {
     final double taxes = order.totalPrice - subtotal;
 
     return Scaffold(
-      backgroundColor: scaffoldBg,
-
+      backgroundColor: SHGOrderManageScreen.scaffoldBg,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: SHGOrderManageScreen.primaryColor,
         elevation: 0,
         foregroundColor: Colors.white,
         leading: IconButton(
@@ -67,7 +77,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Order Details",
+          "Manage Order",
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w600,
@@ -75,7 +85,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-
+      bottomNavigationBar: _buildBottomActionBar(order),
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
@@ -99,7 +109,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
 
             // 5. Payment & Invoicing Breakdown
             _buildPaymentSummaryCard(order, subtotal, taxes, currencyFormatter),
-            SizedBox(height: 12.h),
+            SizedBox(height: 16.h),
           ],
         ),
       ),
@@ -156,45 +166,47 @@ class SHGOrderDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "ORDER STATUS",
+            "CURRENT ORDER STATUS",
             style: GoogleFonts.poppins(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
-              color: textMuted,
+              color: SHGOrderManageScreen.textMuted,
+              letterSpacing: 0.5,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 6.h),
           Row(
             children: [
-              Icon(statusIcon, color: statusColor, size: 18.sp),
-              SizedBox(width: 6.w),
+              Icon(statusIcon, color: statusColor, size: 20.sp),
+              SizedBox(width: 8.w),
               Text(
                 order.status.name,
                 style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.bold,
                   color: statusColor,
                 ),
               ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-            decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Text(
-              order.status == OrderStatus.DELIVERED
-                  ? "Delivered & Settled"
-                  : "Lifecycle State: ${order.status.name}",
-              style: GoogleFonts.poppins(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w500,
-                color: statusColor,
+              const Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Text(
+                  order.status == OrderStatus.DELIVERED ||
+                      order.status == OrderStatus.CANCELLED
+                      ? "Completed"
+                      : "In Progress",
+                  style: GoogleFonts.poppins(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w600,
+                    color: statusColor,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -203,8 +215,10 @@ class SHGOrderDetailScreen extends StatelessWidget {
 
   // --- 2. Order Information Card ---
   Widget _buildOrderInfoCard(OrderModel order) {
-    final formattedCreated = DateFormat('dd MMM yyyy, hh:mm a').format(order.createdAt);
-    final formattedUpdated = DateFormat('dd MMM yyyy, hh:mm a').format(order.updatedAt);
+    final formattedCreated =
+    DateFormat('dd MMM yyyy, hh:mm a').format(order.createdAt);
+    final formattedUpdated =
+    DateFormat('dd MMM yyyy, hh:mm a').format(order.updatedAt);
 
     return Container(
       width: double.infinity,
@@ -228,7 +242,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: SHGOrderManageScreen.textDark,
             ),
           ),
           SizedBox(height: 10.h),
@@ -266,7 +280,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: SHGOrderManageScreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
@@ -284,7 +298,8 @@ class SHGOrderDetailScreen extends StatelessWidget {
                     width: 60.r,
                     height: 60.r,
                     color: const Color(0xffECEFEF),
-                    child: const Icon(Icons.bakery_dining_outlined, color: primaryColor),
+                    child: const Icon(Icons.bakery_dining_outlined,
+                        color: SHGOrderManageScreen.primaryColor),
                   ),
                 ),
               ),
@@ -298,21 +313,22 @@ class SHGOrderDetailScreen extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
-                        color: textDark,
+                        color: SHGOrderManageScreen.textDark,
                       ),
                     ),
                     Text(
                       "SKU / Item ID: #${order.productId}",
                       style: GoogleFonts.poppins(
                         fontSize: 10.sp,
-                        color: textMuted,
+                        color: SHGOrderManageScreen.textMuted,
                       ),
                     ),
                     SizedBox(height: 6.h),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                       decoration: BoxDecoration(
-                        color: cardSubBg,
+                        color: SHGOrderManageScreen.cardSubBg,
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
@@ -358,7 +374,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: SHGOrderManageScreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
@@ -366,11 +382,12 @@ class SHGOrderDetailScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 18.r,
-                backgroundColor: primaryColor.withOpacity(0.12),
+                backgroundColor:
+                SHGOrderManageScreen.primaryColor.withOpacity(0.12),
                 child: Text(
                   "B",
                   style: GoogleFonts.poppins(
-                    color: primaryColor,
+                    color: SHGOrderManageScreen.primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14.sp,
                   ),
@@ -386,14 +403,14 @@ class SHGOrderDetailScreen extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: textDark,
+                        color: SHGOrderManageScreen.textDark,
                       ),
                     ),
                     Text(
                       "Marketplace Verified Buyer",
                       style: GoogleFonts.poppins(
                         fontSize: 10.sp,
-                        color: textMuted,
+                        color: SHGOrderManageScreen.textMuted,
                       ),
                     ),
                   ],
@@ -435,11 +452,12 @@ class SHGOrderDetailScreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: SHGOrderManageScreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
-          _buildAmountRow("Subtotal (${order.quantity} ${order.unit})", formatter.format(subtotal)),
+          _buildAmountRow(
+              "Subtotal (${order.quantity} ${order.unit})", formatter.format(subtotal)),
           SizedBox(height: 6.h),
           _buildAmountRow("Taxes & GST (5%)", formatter.format(taxes)),
           const Divider(height: 18, thickness: 0.6),
@@ -451,7 +469,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  color: textDark,
+                  color: SHGOrderManageScreen.textDark,
                 ),
               ),
               Text(
@@ -459,7 +477,7 @@ class SHGOrderDetailScreen extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.bold,
-                  color: primaryColor,
+                  color: SHGOrderManageScreen.primaryColor,
                 ),
               ),
             ],
@@ -469,18 +487,153 @@ class SHGOrderDetailScreen extends StatelessWidget {
     );
   }
 
+  // --- 6. Bottom Action Bar (Status Transition Trigger) ---
+  Widget _buildBottomActionBar(OrderModel order) {
+    final bool isCompleted =
+        order.status == OrderStatus.DELIVERED || order.status == OrderStatus.CANCELLED;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, -2))
+        ],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 46.h,
+        child: ElevatedButton.icon(
+          onPressed:
+          isCompleted ? null : () => _showStatusUpdateBottomSheet(order),
+          icon: Icon(
+            isCompleted ? Icons.lock_outline : Icons.edit_note_rounded,
+            color: Colors.white,
+            size: 20.sp,
+          ),
+          label: Text(
+            isCompleted ? "Order Finalized" : "Update Order Status",
+            style: GoogleFonts.poppins(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: SHGOrderManageScreen.primaryColor,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- 7. Modal Bottom Sheet for Status Update ---
+  void _showStatusUpdateBottomSheet(OrderModel order) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18.r)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 20.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Update Order Status",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: SHGOrderManageScreen.textDark,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(sheetContext),
+                    ),
+                  ],
+                ),
+                Text(
+                  "Select fulfillment status for #${order.id.length > 8 ? order.id.substring(order.id.length - 8) : order.id}",
+                  style: GoogleFonts.poppins(
+                      fontSize: 11.sp, color: SHGOrderManageScreen.textMuted),
+                ),
+                SizedBox(height: 14.h),
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 10.h,
+                  children: OrderStatus.values.map((status) {
+                    final bool isCurrent = order.status == status;
+                    return ChoiceChip(
+                      label: Text(status.name),
+                      selected: isCurrent,
+                      selectedColor: SHGOrderManageScreen.primaryColor,
+                      backgroundColor: const Color(0xffF0F0F0),
+                      labelStyle: GoogleFonts.poppins(
+                        fontSize: 11.sp,
+                        fontWeight:
+                        isCurrent ? FontWeight.w700 : FontWeight.w500,
+                        color: isCurrent
+                            ? Colors.white
+                            : SHGOrderManageScreen.textDark,
+                      ),
+                      onSelected: (selected) {
+                        if (selected && !isCurrent) {
+                          // Mutate live Riverpod state
+                          ref
+                              .read(ShgorderlistProvider.notifier)
+                              .updateOrderStatus(order.id, status);
+
+                          Navigator.pop(sheetContext);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Order status updated to ${status.name}!",
+                                style: GoogleFonts.poppins(color: Colors.white),
+                              ),
+                              backgroundColor: const  Color(0xff880D4F),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 10.h),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   // --- Helpers ---
   Widget _buildInfoRow(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted)),
+        Text(title,
+            style: GoogleFonts.poppins(
+                fontSize: 11.sp, color: SHGOrderManageScreen.textMuted)),
         Text(
           value,
           style: GoogleFonts.poppins(
             fontSize: 11.sp,
             fontWeight: FontWeight.w600,
-            color: textDark,
+            color: SHGOrderManageScreen.textDark,
           ),
         ),
       ],
@@ -491,13 +644,15 @@ class SHGOrderDetailScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted)),
+        Text(title,
+            style: GoogleFonts.poppins(
+                fontSize: 11.sp, color: SHGOrderManageScreen.textMuted)),
         Text(
           amount,
           style: GoogleFonts.poppins(
             fontSize: 11.sp,
             fontWeight: FontWeight.w500,
-            color: textDark,
+            color: SHGOrderManageScreen.textDark,
           ),
         ),
       ],
