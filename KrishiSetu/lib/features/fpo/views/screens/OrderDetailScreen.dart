@@ -51,30 +51,6 @@ class Orderdetailscreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-        color: Colors.white,
-        child: ElevatedButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.download_outlined, color: Colors.white),
-          label: Text(
-            "Download Invoice",
-            style: GoogleFonts.poppins(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: accentOrange,
-            elevation: 0,
-            minimumSize: Size(double.infinity, 46.h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
