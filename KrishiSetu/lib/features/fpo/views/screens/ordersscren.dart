@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/models/OrderModel.dart';
 import '../../dummydata/OrderDummyList.dart';
-import 'OrderDetailScreen.dart';
+import '../../viewmodels/FPO_OrderListRiverpod.dart';
+import 'OrderManagescreen.dart';
 
-class Ordersscren extends StatefulWidget {
+class Ordersscren extends ConsumerStatefulWidget {
   const Ordersscren({super.key});
 
   @override
-  State<Ordersscren> createState() => _OrdersscrenState();
+  ConsumerState<Ordersscren> createState() => _OrdersscrenState();
 }
 
-class _OrdersscrenState extends State<Ordersscren> {
+class _OrdersscrenState extends ConsumerState<Ordersscren> {
   static const Color primaryBrown = Color(0xff8D4F1E);
   static const Color scaffoldBg = Color(0xffF8F9FA);
   static const Color textDark = Color(0xff1E1E1E);
@@ -31,7 +33,7 @@ class _OrdersscrenState extends State<Ordersscren> {
   @override
   Widget build(BuildContext context) {
     // Filter list based on selected category tab
-    final filteredOrders = mockOrderList.where((order) {
+    final filteredOrders = ref.watch(FPOorderlistProvider).where((order) {
       if (selectedTab == "All") return true;
       if (selectedTab == "Pending") return order.status == OrderStatus.PENDING;
       if (selectedTab == "Active") {
@@ -330,7 +332,7 @@ class _OrdersscrenState extends State<Ordersscren> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Orderdetailscreen(index: index),
+                      builder: (context) => OrderManagescreen(orderid: order.id),
                     ),
                   );
                 },
@@ -343,7 +345,7 @@ class _OrdersscrenState extends State<Ordersscren> {
                   minimumSize: Size(0, 30.h),
                 ),
                 child: Text(
-                  "View Details",
+                  "Manage Order",
                   style: GoogleFonts.poppins(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w600,
