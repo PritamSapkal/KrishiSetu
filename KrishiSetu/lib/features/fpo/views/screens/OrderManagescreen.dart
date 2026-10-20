@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/models/OrderModel.dart';
-import '../../dummydata/OrderDummyList.dart';
+import '../../viewmodels/FPO_OrderListRiverpod.dart';
 
-class Orderdetailscreen extends StatelessWidget {
-  const Orderdetailscreen({required this.index, super.key});
-  final int index;
+class OrderManagescreen extends ConsumerStatefulWidget {
+  const OrderManagescreen({required this.orderid, super.key});
+  final String orderid;
 
   static const Color primaryBrown = Color(0xff964900);
   static const Color accentOrange = Color(0xffE07525);
   static const Color scaffoldBg = Color(0xffF8F9FA);
   static const Color textDark = Color(0xff1E1E1E);
   static const Color textMuted = Color(0xff757575);
-  static const Color cardSubBg = Color(0xffF4F5F8);
+  static const Color cardSubBg = Color(0xffFAF0E6);
 
   @override
+  ConsumerState<OrderManagescreen> createState() => _OrderManagescreenState();
+}
+
+class _OrderManagescreenState extends ConsumerState<OrderManagescreen> {
+  @override
   Widget build(BuildContext context) {
-    final OrderModel order = mockOrderList[index];
+    // Watch the live order list from Riverpod
+    final List<OrderModel> orders = ref.watch(FPOorderlistProvider);
+
+    final OrderModel? order = orders.cast<OrderModel?>().firstWhere(
+          (o) => o?.id == widget.orderid,
+      orElse: () => null,
+    );
 
     final currencyFormatter = NumberFormat.currency(
       locale: 'en_IN',
@@ -27,54 +39,75 @@ class Orderdetailscreen extends StatelessWidget {
       decimalDigits: 0,
     );
 
+    // Gracefully handle if order is not found
+    if (order == null) {
+      return Scaffold(
+        backgroundColor: OrderManagescreen.scaffoldBg,
+        appBar: AppBar(
+          backgroundColor: OrderManagescreen.primaryBrown,
+          foregroundColor: Colors.white,
+          title: Text(
+            "Order Not Found",
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16.sp),
+          ),
+        ),
+        body: Center(
+          child: Text(
+            "Order #${widget.orderid} could not be found.",
+            style: GoogleFonts.poppins(color: OrderManagescreen.textMuted, fontSize: 13.sp),
+          ),
+        ),
+      );
+    }
+
     // Derived subtotal and tax calculation based on 5% GST
     final double subtotal = order.totalPrice / 1.05;
     final double taxes = order.totalPrice - subtotal;
 
     return Scaffold(
-      backgroundColor: scaffoldBg,
+      backgroundColor: OrderManagescreen.scaffoldBg,
       appBar: AppBar(
-        backgroundColor: primaryBrown,
+        backgroundColor: OrderManagescreen.primaryBrown,
         elevation: 0,
+        foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Center(
-          child: Text(
-            "Order Details",
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 16.sp,
-            ),
+        title: Text(
+          "Manage Order",
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 16.sp,
           ),
         ),
       ),
+      bottomNavigationBar: _buildBottomActionBar(context, order),
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         child: Column(
           children: [
-            // Status & Lifecycle Card
+            // 1. Status & Lifecycle Card
             _buildStatusCard(order),
             SizedBox(height: 12.h),
 
-            // Order Information Card
+            // 2. Order Information Card
             _buildOrderInfoCard(order),
             SizedBox(height: 12.h),
 
-            // Product Details Card
+            // 3. Product Details Card
             _buildProductDetailsCard(order),
             SizedBox(height: 12.h),
 
-            // Buyer Information Card
+            // 4. Buyer Information Card
             _buildBuyerInfoCard(order),
             SizedBox(height: 12.h),
 
-            // Payment Summary Card
+            // 5. Payment Summary Card
             _buildPaymentSummaryCard(order, subtotal, taxes, currencyFormatter),
-            SizedBox(height: 12.h),
+            SizedBox(height: 16.h),
           ],
         ),
       ),
@@ -135,7 +168,7 @@ class Orderdetailscreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
-              color: textMuted,
+              color: OrderManagescreen.textMuted,
             ),
           ),
           SizedBox(height: 4.h),
@@ -151,34 +184,25 @@ class Orderdetailscreen extends StatelessWidget {
                   color: statusColor,
                 ),
               ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          Text(
-            "FULFILLMENT",
-            style: GoogleFonts.poppins(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w600,
-              color: textMuted,
-            ),
-          ),
-          SizedBox(height: 4.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-            decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Text(
-              order.status == OrderStatus.DELIVERED
-                  ? "Completed & Delivered"
-                  : "Status: ${order.status.name}",
-              style: GoogleFonts.poppins(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w500,
-                color: statusColor,
+              const Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Text(
+                  order.status == OrderStatus.DELIVERED || order.status == OrderStatus.CANCELLED
+                      ? "Completed"
+                      : "In Progress",
+                  style: GoogleFonts.poppins(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                    color: statusColor,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -212,7 +236,7 @@ class Orderdetailscreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: OrderManagescreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
@@ -222,13 +246,13 @@ class Orderdetailscreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Order ID", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
+                  Text("Order ID", style: GoogleFonts.poppins(fontSize: 10.sp, color: OrderManagescreen.textMuted)),
                   Text(
                     "#${order.id}",
                     style: GoogleFonts.poppins(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w600,
-                      color: textDark,
+                      color: OrderManagescreen.textDark,
                     ),
                   ),
                 ],
@@ -242,13 +266,13 @@ class Orderdetailscreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Created At", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
+                  Text("Created At", style: GoogleFonts.poppins(fontSize: 10.sp, color: OrderManagescreen.textMuted)),
                   Text(
                     formattedCreated,
                     style: GoogleFonts.poppins(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w500,
-                      color: textDark,
+                      color: OrderManagescreen.textDark,
                     ),
                   ),
                 ],
@@ -256,13 +280,13 @@ class Orderdetailscreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text("Last Updated", style: GoogleFonts.poppins(fontSize: 10.sp, color: textMuted)),
+                  Text("Last Updated", style: GoogleFonts.poppins(fontSize: 10.sp, color: OrderManagescreen.textMuted)),
                   Text(
                     formattedUpdated,
                     style: GoogleFonts.poppins(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w500,
-                      color: textDark,
+                      color: OrderManagescreen.textDark,
                     ),
                   ),
                 ],
@@ -298,7 +322,7 @@ class Orderdetailscreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: OrderManagescreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
@@ -316,7 +340,7 @@ class Orderdetailscreen extends StatelessWidget {
                     width: 58.r,
                     height: 58.r,
                     color: const Color(0xffECEFEF),
-                    child: const Icon(Icons.eco, color: primaryBrown),
+                    child: const Icon(Icons.eco, color: OrderManagescreen.primaryBrown),
                   ),
                 ),
               ),
@@ -330,21 +354,21 @@ class Orderdetailscreen extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
-                        color: textDark,
+                        color: OrderManagescreen.textDark,
                       ),
                     ),
                     Text(
                       "Product ID: #${order.productId.length > 8 ? order.productId.substring(order.productId.length - 8) : order.productId}",
                       style: GoogleFonts.poppins(
                         fontSize: 10.sp,
-                        color: textMuted,
+                        color: OrderManagescreen.textMuted,
                       ),
                     ),
                     SizedBox(height: 6.h),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                       decoration: BoxDecoration(
-                        color: cardSubBg,
+                        color: OrderManagescreen.cardSubBg,
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
@@ -352,7 +376,7 @@ class Orderdetailscreen extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w500,
-                          color: textDark,
+                          color: OrderManagescreen.textDark,
                         ),
                       ),
                     ),
@@ -390,7 +414,7 @@ class Orderdetailscreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: OrderManagescreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
@@ -398,7 +422,7 @@ class Orderdetailscreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 18.r,
-                backgroundColor: accentOrange,
+                backgroundColor: OrderManagescreen.accentOrange,
                 child: Text(
                   "B",
                   style: GoogleFonts.poppins(
@@ -418,14 +442,14 @@ class Orderdetailscreen extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: textDark,
+                        color: OrderManagescreen.textDark,
                       ),
                     ),
                     Text(
                       "Verified Platform Buyer",
                       style: GoogleFonts.poppins(
                         fontSize: 10.sp,
-                        color: textMuted,
+                        color: OrderManagescreen.textMuted,
                       ),
                     ),
                   ],
@@ -467,7 +491,7 @@ class Orderdetailscreen extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: textDark,
+              color: OrderManagescreen.textDark,
             ),
           ),
           SizedBox(height: 12.h),
@@ -476,14 +500,14 @@ class Orderdetailscreen extends StatelessWidget {
             children: [
               Text(
                 "Subtotal (${order.quantity} ${order.unit})",
-                style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted),
+                style: GoogleFonts.poppins(fontSize: 11.sp, color: OrderManagescreen.textMuted),
               ),
               Text(
                 formatter.format(subtotal),
                 style: GoogleFonts.poppins(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
-                  color: textDark,
+                  color: OrderManagescreen.textDark,
                 ),
               ),
             ],
@@ -494,14 +518,14 @@ class Orderdetailscreen extends StatelessWidget {
             children: [
               Text(
                 "Taxes & GST (5%)",
-                style: GoogleFonts.poppins(fontSize: 11.sp, color: textMuted),
+                style: GoogleFonts.poppins(fontSize: 11.sp, color: OrderManagescreen.textMuted),
               ),
               Text(
                 formatter.format(taxes),
                 style: GoogleFonts.poppins(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
-                  color: textDark,
+                  color: OrderManagescreen.textDark,
                 ),
               ),
             ],
@@ -515,7 +539,7 @@ class Orderdetailscreen extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  color: textDark,
+                  color: OrderManagescreen.textDark,
                 ),
               ),
               Text(
@@ -523,13 +547,141 @@ class Orderdetailscreen extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.bold,
-                  color: primaryBrown,
+                  color: OrderManagescreen.primaryBrown,
                 ),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  // --- 6. Bottom Action Bar ---
+  Widget _buildBottomActionBar(BuildContext context, OrderModel order) {
+    final bool isCompleted =
+        order.status == OrderStatus.DELIVERED || order.status == OrderStatus.CANCELLED;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, -2))
+        ],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 46.h,
+        child: ElevatedButton.icon(
+          onPressed: isCompleted ? null : () => _showStatusUpdateBottomSheet(context, order),
+          icon: Icon(
+            isCompleted ? Icons.lock_outline : Icons.edit_note_rounded,
+            color: Colors.white,
+            size: 20.sp,
+          ),
+          label: Text(
+            isCompleted ? "Order Finalized" : "Update Order Status",
+            style: GoogleFonts.poppins(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: OrderManagescreen.primaryBrown,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- 7. Modal Bottom Sheet for Status Update ---
+  void _showStatusUpdateBottomSheet(BuildContext context, OrderModel order) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18.r)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 20.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Update Order Status",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: OrderManagescreen.textDark,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(sheetContext),
+                    ),
+                  ],
+                ),
+                Text(
+                  "Select the fulfillment state for #${order.id.length > 8 ? order.id.substring(order.id.length - 8) : order.id}",
+                  style: GoogleFonts.poppins(fontSize: 11.sp, color: OrderManagescreen.textMuted),
+                ),
+                SizedBox(height: 14.h),
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 10.h,
+                  children: OrderStatus.values.map((status) {
+                    final bool isCurrent = order.status == status;
+                    return ChoiceChip(
+                      label: Text(status.name),
+                      selected: isCurrent,
+                      selectedColor: OrderManagescreen.primaryBrown,
+                      backgroundColor: const Color(0xffF0F0F0),
+                      labelStyle: GoogleFonts.poppins(
+                        fontSize: 11.sp,
+                        fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+                        color: isCurrent ? Colors.white : OrderManagescreen.textDark,
+                      ),
+                      onSelected: (selected) {
+                        if (selected && !isCurrent) {
+                          // Update FPO Riverpod State
+                          ref
+                              .read(FPOorderlistProvider.notifier)
+                              .updateOrderStatus(order.id, status);
+
+                          Navigator.pop(sheetContext);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Order status updated to ${status.name}!",
+                                style: GoogleFonts.poppins(color: Colors.white),
+                              ),
+                              backgroundColor: const  Color(0xff964900),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 10.h),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
