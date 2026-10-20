@@ -21,7 +21,7 @@ class ShgDashboard extends ConsumerStatefulWidget {
 class _ShgDashboardState extends ConsumerState<ShgDashboard> {
   final List<String> _appbartitlelist = [
     "KrishiSetu",
-    "Produce",
+    "Product",
     "Orders",
     "Members",
     "Profile",
@@ -79,7 +79,7 @@ class _ShgDashboardState extends ConsumerState<ShgDashboard> {
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.basketShopping),
-              label: "Produce",
+              label: "Product",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined),
