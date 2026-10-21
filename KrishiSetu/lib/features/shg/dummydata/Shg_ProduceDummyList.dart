@@ -2,7 +2,7 @@ import '../../../core/models/ProductModel.dart';
 
 List<ProductModel> shgProductList = [
   ProductModel(
-    id: "6708db421a9c8f2b34a10001",
+    id: "6708mv56db421a9c8f2b34a10001",
     name: "Organic Finger Millet (Ragi)",
     category: "Raw Millet",
     description: "High-calcium, sun-dried organic ragi grains sourced directly from local women farmers.",
@@ -16,7 +16,7 @@ List<ProductModel> shgProductList = [
     updatedAt: "2026-10-11T12:00:00",
   ),
   ProductModel(
-    id: "6708db421a9c8f2b34a10002",
+    id: "6708db42aw31a9c8f2b34a10002",
     name: "Cold-Pressed Groundnut Oil",
     category: "Edible Oils",
     description: "Traditional wood-pressed (Kachi Ghani) pure groundnut oil made without chemicals or preservatives.",
@@ -30,7 +30,7 @@ List<ProductModel> shgProductList = [
     updatedAt: "2026-10-12T11:45:00",
   ),
   ProductModel(
-    id: "6708db421a9c8f2b34a10003",
+    id: "6708db421a9muy677c8f2b34a10003",
     name: "Handmade Turmeric Powder (Curcumin Rich)",
     category: "Spices",
     description: "Stone-ground organic turmeric roots processed cleanly by Mahila Bachat Gat members.",
@@ -44,7 +44,7 @@ List<ProductModel> shgProductList = [
     updatedAt: "2026-10-13T08:30:00",
   ),
   ProductModel(
-    id: "6708db421a9c8f2b34a10004",
+    id: "6708db421a9cawe354358f2b34a10004",
     name: "Artisanal Mango Pickle",
     category: "Pickles & Preserves",
     description: "Homestyle spicy raw mango pickle cured in mustard oil with traditional village spices.",
@@ -58,7 +58,7 @@ List<ProductModel> shgProductList = [
     updatedAt: "2026-10-14T16:00:00",
   ),
   ProductModel(
-    id: "6708db421a9c8f2b34a10005",
+    id: "6708db421cbfgy5467a9c8f2b34a10005",
     name: "Handwoven Cotton Jute Tote Bag",
     category: "Handicrafts",
     description: "Eco-friendly, sturdy multi-purpose carry bags hand-stitched by village artisans.",
@@ -72,7 +72,7 @@ List<ProductModel> shgProductList = [
     updatedAt: "2026-10-15T11:00:00",
   ),
   ProductModel(
-    id: "6708db421a9c8f2b34a10006",
+    id: "6708db421a9c8f2b34ajkl810006",
     name: "Pure Natural Wild Honey",
     category: "Forest Produce",
     description: "Raw, unpasteurized forest honey sustainably harvested by tribal SHG clusters.",
@@ -86,7 +86,7 @@ List<ProductModel> shgProductList = [
     updatedAt: "2026-10-16T10:15:00",
   ),
   ProductModel(
-    id: "6708db421a9c8f2b34a10007",
+    id: "6708db421a9c8f2b34asdr34510007",
     name: "Hand-Rolled Urad Dal Papad",
     category: "Dry Snacks",
     description: "Crispy sun-dried papads made with ground black gram, black pepper, and hing.",

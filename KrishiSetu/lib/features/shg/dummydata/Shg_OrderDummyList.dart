@@ -3,11 +3,11 @@ import '../../../core/models/OrderModel.dart'; // Adjust import path if needed
 final List<OrderModel> mockShgOrderList = [
   // 1. PENDING - Newly received order for Roasted Millet Flour packs
   OrderModel(
-    id: "6712ab129f1c4e78a2300101",
+    id: "6712abku345129f1c4e78a2300101",
     buyerId: "6708d7211a9c8f2b34a09899",
     productId: "SHG_PRD_001",
     name: "Roasted Millet Flour Mix",
-    imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://www.dineshflourmills.com/cdn/shop/files/Multi_Millets_Flour_Shopify_1.png?v=1788590953",
     quantity: 40.0,
     unit: "PACKS",
     pricePerUnit: 85.0,
@@ -19,11 +19,11 @@ final List<OrderModel> mockShgOrderList = [
 
   // 2. CONFIRMED - Accepted order for Handmade Ragi Papad
   OrderModel(
-    id: "6712ab129f1c4e78a2300102",
+    id: "6712ab129f1c4e78a23f65400102",
     buyerId: "6708d7211a9c8f2b34a09877",
     productId: "SHG_PRD_002",
     name: "Handmade Ragi Papad (1kg Box)",
-    imageUrl: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://s3revive-prod-public.s3.ap-south-1.amazonaws.com/uploads/tsp/assets/a377ebb5-3ddc-4fd8-8f63-f4ce9d4426a7.jpg",
     quantity: 60.0,
     unit: "PACKS",
     pricePerUnit: 120.0,
@@ -35,11 +35,11 @@ final List<OrderModel> mockShgOrderList = [
 
   // 3. PROCESSING - In packaging stage for Organic Bajra Ladoo batch
   OrderModel(
-    id: "6712ab129f1c4e78a2300103",
+    id: "6712ab129f1cxft4564e78a2300103",
     buyerId: "6708d7211a9c8f2b34a09888",
     productId: "SHG_PRD_003",
     name: "Organic Bajra Ladoo (Jaggery)",
-    imageUrl: "https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2HImeJeJF3JYN60iD8rCQ9io5xfXFBKbwZTaqtz_PkQ&s=10",
     quantity: 35.0,
     unit: "KG",
     pricePerUnit: 240.0,
@@ -51,11 +51,11 @@ final List<OrderModel> mockShgOrderList = [
 
   // 4. SHIPPED - Dispatched via local transport for wholesale Buyer
   OrderModel(
-    id: "6712ab129f1c4e78a2300104",
+    id: "6712ab12fgh5769f1c4e78a2300104",
     buyerId: "6708d7211a9c8f2b34a09866",
     productId: "SHG_PRD_004",
     name: "Stone-Ground Jowar Flour",
-    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr_NOu_1dsIJAXDU09bzU40L-cFsx6QUB32ocBYoksoKEaPLp23ZkZ5Wo&s=10",
     quantity: 200.0,
     unit: "KG",
     pricePerUnit: 48.0,
@@ -67,11 +67,11 @@ final List<OrderModel> mockShgOrderList = [
 
   // 5. DELIVERED - Fulfilled local retail shop order
   OrderModel(
-    id: "6712ab129f1c4e78a2300105",
+    id: "6712ab129f1c4e78a23001fg345305",
     buyerId: "6708d7211a9c8f2b34a09855",
     productId: "SHG_PRD_005",
     name: "Traditional Multi-Millet Khakhra",
-    imageUrl: "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://falgunifood.com/cdn/shop/files/254-Multi-MIllets-Khakhara-1080px-X-1080px-01.jpg?v=1745572349",
     quantity: 80.0,
     unit: "PACKS",
     pricePerUnit: 70.0,
@@ -83,11 +83,11 @@ final List<OrderModel> mockShgOrderList = [
 
   // 6. CANCELLED - Cancelled by customer before confirmation
   OrderModel(
-    id: "6712ab129f1c4e78a2300106",
+    id: "6712ab129fvb451c4e78a2300106",
     buyerId: "6708d7211a9c8f2b34a09844",
     productId: "SHG_PRD_001",
     name: "Roasted Millet Flour Mix",
-    imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpD4zTMqUOaQDVliFkQo6S5Ru-RGaaHV-weq5fVZO7v0kRkOJOvjjJtggX&s=10",
     quantity: 15.0,
     unit: "PACKS",
     pricePerUnit: 85.0,
