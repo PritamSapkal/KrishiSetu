@@ -3,11 +3,11 @@ import '../../../core/models/ProductModel.dart';
 final List<ProductModel> mockProductList = [
   // 1. Organic Finger Millet (Ragi)
   ProductModel(
-    id: "6708db421a9c8f2b34a10001",
+    id: "6708db4jh7e21a923fg76c8f2b34a10001",
     name: "Organic Finger Millet (Ragi)",
     category: "Raw Millet",
     description: "High-calcium, sun-dried organic ragi grains collected directly from local member farmers.",
-    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnPzcl0Frh4koInEpq2Bag_DxcqkeXIbXCOXTlw2BCWA&s=10",
     price: 45.0,
     quantity: 1200.0,
     unit: "KG",
@@ -19,11 +19,11 @@ final List<ProductModel> mockProductList = [
 
   // 2. Pearl Millet (Bajra)
   ProductModel(
-    id: "6708db421a9c8f2b34a10002",
+    id: "6708db421a9c8f2fgh6b34a1hdfg640002",
     name: "Pearl Millet (Bajra)",
     category: "Raw Millet",
     description: "Premium quality cleaned bajra suitable for flour milling and wholesale poultry/cattle feed.",
-    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUch-AEgZRSqrUzjbfzWp0EnFlMYFvNUMbyhGJ0D_z1eZomfFsetbXHlk&s=10",
     price: 38.0,
     quantity: 850.0,
     unit: "KG",
@@ -35,11 +35,11 @@ final List<ProductModel> mockProductList = [
 
   // 3. Foxtail Millet (Kangni)
   ProductModel(
-    id: "6708db421a9c8f2b34a10003",
+    id: "670dsfhg58db421a9c8fas98u2b34a10003",
     name: "Foxtail Millet (Kangni)",
     category: "Raw Millet",
     description: "Unpolished, nutrient-dense whole grain foxtail millets with low glycemic index.",
-    imageUrl: "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7TsQLmqz8dcLUeWXRbo0cXRU5r84z-ohJgb9Bc7zfbOvYoS79Te6oJKs&s=10",
     price: 65.0,
     quantity: 400.0,
     unit: "KG",
@@ -51,11 +51,11 @@ final List<ProductModel> mockProductList = [
 
   // 4. Roasted Multi-Millet Flour
   ProductModel(
-    id: "6708db421a9c8f2b34a10004",
+    id: "6708db421a9cbfh3478b5xd8f2b34a10004",
     name: "Roasted Multi-Millet Flour",
     category: "Flour",
     description: "Traditional stone-ground flour mix made of Ragi, Jowar, and Bajra. Ready to cook.",
-    imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzQ_8j6NE79RAj_Z5FpkGAN-7l96-SbFSbCaY7tpE3UVb3jwsPJPeFJxo&s=10",
     price: 80.0,
     quantity: 150.0,
     unit: "PACKS",
@@ -67,11 +67,11 @@ final List<ProductModel> mockProductList = [
 
   // 5. White Sorghum (Jowar) - Bulk Quintal Listing
   ProductModel(
-    id: "6708db421a9c8f2b34a10005",
+    id: "6708djgh56b42kl81a9c8f2b34a10005",
     name: "Maldandi Sorghum (Jowar)",
     category: "Raw Millet",
     description: "High-grade Maldandi jowar grains packed in sturdy bulk bags for processors and traders.",
-    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpB-swBijp1Mj9nDG9pkOW9WKBBhf1s_-AuXbVM_jepw&s=10",
     price: 4200.0,
     quantity: 25.0,
     unit: "QUINTAL",
@@ -83,11 +83,11 @@ final List<ProductModel> mockProductList = [
 
   // 6. Inactive / Out of Stock Product (for testing inactive state toggles)
   ProductModel(
-    id: "6708db421a9c8f2b34a10006",
+    id: "6708as12db421as98ja9c8f2b34a10006",
     name: "Proso Millet (Variga)",
     category: "Raw Millet",
     description: "Farm-harvested proso millet batch, temporarily disabled pending harvest batch verification.",
-    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTakoELGqVkte7HDqvms4fUTsOHgHITUlyE51id_SnPfw&s=10",
     price: 55.0,
     quantity: 0.0,
     unit: "KG",
