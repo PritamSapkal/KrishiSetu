@@ -3,11 +3,11 @@ import '../../../core/models/OrderModel.dart';
 final List<OrderModel> mockProcessorOrderList = [
   // 1. PENDING - New wholesale bulk intake from Institutional Buyer
   OrderModel(
-    id: "6715cd129f1c4e78a2300201",
+    id: "6715cd129f1c4dfgh455e78a2300201",
     buyerId: "6708d7211a9c8f2b34a09899",
     productId: "PRC_PRD_001",
     name: "Industrial Fine Ragi Flour",
-    imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6hW3IdTQIEcEsvt_K3UWpnzt1-4X5KGn_0M_5Bi_HLIXblEokD9zXX58&s=10",
     quantity: 25.0,
     unit: "QUINTAL",
     pricePerUnit: 3600.0,
@@ -19,11 +19,11 @@ final List<OrderModel> mockProcessorOrderList = [
 
   // 2. CONFIRMED - Accepted order scheduled for dehulling batch
   OrderModel(
-    id: "6715cd129f1c4e78a2300202",
+    id: "6715cdzxcv234129f1c4e78a2300202",
     buyerId: "6708d7211a9c8f2b34a09877",
     productId: "PRC_PRD_002",
     name: "Dehulled Foxtail Millet (Kangni)",
-    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgslvhbsAIVEGNLOW5FbGcYOKiKSszXr7ZYBRb15itHg&s=10",
     quantity: 15.0,
     unit: "QUINTAL",
     pricePerUnit: 5800.0,
@@ -35,11 +35,11 @@ final List<OrderModel> mockProcessorOrderList = [
 
   // 3. PROCESSING - In milling & mechanical packaging line
   OrderModel(
-    id: "6715cd129f1c4e78a2300203",
+    id: "6715cd129ghj3456f1c4e78a2300203",
     buyerId: "6708d7211a9c8f2b34a09888",
     productId: "PRC_PRD_003",
     name: "Processed Jowar Rava (Semolina)",
-    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiAqCnYC278KK-M5roChryIROhWJL9xD7qADGpyvSJEg&s",
     quantity: 800.0,
     unit: "KG",
     pricePerUnit: 42.0,
@@ -51,11 +51,11 @@ final List<OrderModel> mockProcessorOrderList = [
 
   // 4. SHIPPED - Loaded into logistics truck from MIDC Kupwad
   OrderModel(
-    id: "6715cd129f1c4e78a2300204",
+    id: "6715cd129fiop1231c4e78a2300204",
     buyerId: "6708d7211a9c8f2b34a09866",
     productId: "PRC_PRD_004",
     name: "Steam-Rolled Pearl Millet Flakes",
-    imageUrl: "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEEAY2tEIa4ZGwFjWQUWz13kYY37nodspqrFMl205zZw&s=10",
     quantity: 500.0,
     unit: "KG",
     pricePerUnit: 65.0,
@@ -67,11 +67,11 @@ final List<OrderModel> mockProcessorOrderList = [
 
   // 5. DELIVERED - Completed dispatch and received by grain distributor
   OrderModel(
-    id: "6715cd129f1c4e78a2300205",
+    id: "6715ccvgy4965d129f1c4e78a2300205",
     buyerId: "6708d7211a9c8f2b34a09855",
     productId: "PRC_PRD_005",
     name: "Cleaned & Graded Little Millet",
-    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://myharvestfarms.com/cdn/shop/files/myharvest-organic-samai-little-millet-chemical-free.jpg?v=1776165799&width=1500",
     quantity: 20.0,
     unit: "QUINTAL",
     pricePerUnit: 6200.0,
@@ -83,11 +83,11 @@ final List<OrderModel> mockProcessorOrderList = [
 
   // 6. CANCELLED - Order cancelled due to specification mismatch
   OrderModel(
-    id: "6715cd129f1c4e78a2300206",
+    id: "6715cd129f1c4e7c46hnyh8a2300206",
     buyerId: "6708d7211a9c8f2b34a09844",
     productId: "PRC_PRD_001",
     name: "Industrial Fine Ragi Flour",
-    imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJtyFj6kKlE2PXmlqDBngIsUrHVal7IjzEIf8VOI_LvQ&s",
     quantity: 10.0,
     unit: "QUINTAL",
     pricePerUnit: 3600.0,
