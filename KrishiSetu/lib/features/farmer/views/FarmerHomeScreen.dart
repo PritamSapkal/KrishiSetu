@@ -17,6 +17,8 @@ import '../dummydata/mock_farmer_data.dart';
 import '../viewmodels/FarmerOrderListRiverpod.dart';
 import '../viewmodels/FarmerProductListRiverpod.dart';
 import '../viewmodels/bottomAppbarIndexProvider.dart';
+import 'FarmerAddProduceScreen.dart';
+import 'FarmerOrderManageScreen.dart';
 
 class FarmerHomeScreen extends ConsumerStatefulWidget {
   const FarmerHomeScreen({super.key});
@@ -53,6 +55,7 @@ class _FarmerHomeScreenState extends ConsumerState<FarmerHomeScreen> {
 
     return Scaffold(
       backgroundColor: scaffoldBg,
+
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Column(
@@ -240,7 +243,7 @@ class _FarmerHomeScreenState extends ConsumerState<FarmerHomeScreen> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(16.r),
                       onTap: () {
-                        // Navigate to Farmer Add Produce Screen
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>FarmerAddProduceScreen()));
                       },
                       child: Quickactioncart(
                         icon: Icons.add_box_outlined,
@@ -360,7 +363,12 @@ class _FarmerHomeScreenState extends ConsumerState<FarmerHomeScreen> {
 
     return InkWell(
       onTap: () {
-        // Navigate to Farmer Order Manage Screen passing order.id
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Farmerordermanagescreen(orderId: order.id),
+          ),
+        );
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
