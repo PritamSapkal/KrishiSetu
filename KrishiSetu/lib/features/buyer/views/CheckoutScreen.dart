@@ -134,19 +134,25 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   children: [
                     TextFormField(
                       controller: _nameController,
-                      decoration: const InputDecoration(labelText: "Full Name", prefixIcon: Icon(Icons.person_outline)),
+                      cursorColor: Colors.black,
+                      style: GoogleFonts.poppins(color: Colors.black),
+                      decoration: const InputDecoration(
+                          labelText: "Full Name",
+                          prefixIcon: Icon(Icons.person_outline)),
                       validator: (v) => v!.isEmpty ? "Enter name" : null,
                     ),
                     SizedBox(height: 8.h),
                     TextFormField(
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
+                      style: GoogleFonts.poppins(color: Colors.black),
                       decoration: const InputDecoration(labelText: "Mobile Number", prefixIcon: Icon(Icons.phone_outlined)),
                       validator: (v) => v!.length != 10 ? "Enter 10-digit number" : null,
                     ),
                     SizedBox(height: 8.h),
                     TextFormField(
                       controller: _addressController,
+                      style: GoogleFonts.poppins(color: Colors.black),
                       maxLines: 2,
                       decoration: const InputDecoration(labelText: "Full Address", prefixIcon: Icon(Icons.location_on_outlined)),
                       validator: (v) => v!.isEmpty ? "Enter address" : null,
@@ -154,6 +160,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     SizedBox(height: 8.h),
                     TextFormField(
                       controller: _pincodeController,
+                      style: GoogleFonts.poppins(color: Colors.black),
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(labelText: "Pin Code", prefixIcon: Icon(Icons.pin_drop_outlined)),
                       validator: (v) => v!.length != 6 ? "Enter 6-digit PIN" : null,

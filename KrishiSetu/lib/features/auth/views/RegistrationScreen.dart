@@ -314,6 +314,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   // --- Role Dropdown Field ---
   Widget _buildRoleDropdown() {
     return DropdownButtonFormField<Map<String, dynamic>>(
+      dropdownColor: Colors.white,
+      borderRadius: BorderRadius.all(Radius.circular(20.r)),
       value: _selectedRole,
       hint: Text(
         "Select Role",

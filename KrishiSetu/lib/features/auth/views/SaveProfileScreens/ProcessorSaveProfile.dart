@@ -155,6 +155,8 @@ class _ProcessorSaveProfileScreenState extends ConsumerState<ProcessorSaveProfil
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
+                                dropdownColor: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(20.r)),
                                 value: _selectedBusinessType,
                                 isExpanded: true,
                                 icon: const Icon(Icons.arrow_drop_down, color: primaryGreen),

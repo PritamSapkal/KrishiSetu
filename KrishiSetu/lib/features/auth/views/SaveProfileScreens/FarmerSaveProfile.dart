@@ -142,6 +142,8 @@ class _FarmerSaveProfileScreenState extends ConsumerState<FarmerSaveProfileScree
                                   ),
                                   child: DropdownButtonHideUnderline(
                                     child: DropdownButton<String>(
+                                      dropdownColor: Colors.white,
+                                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
                                       value: _selectedFarmUnit,
                                       isExpanded: true,
                                       icon: const Icon(Icons.arrow_drop_down, color: primaryGreen),
