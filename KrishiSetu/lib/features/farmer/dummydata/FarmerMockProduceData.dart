@@ -3,11 +3,11 @@ import '../../../core/models/ProductModel.dart';
 final List<ProductModel> mockFarmerProductList = [
   // 1. Raw Maldandi Jowar (Sorghum)
   ProductModel(
-    id: "FAR_PRD_001",
+    id: "FAR_PRD_001e443",
     name: "Raw Maldandi Jowar (Sorghum)",
     category: "Raw Millet",
     description: "Farm-harvested white pearl Maldandi sorghum grains. Cleaned, sun-dried, and ready for bulk pickup from the farm yard.",
-    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdyBlxAMl56s6vW6Ldwmu7bT-9f2hI9iE_VPfH4NJBag&s=10",
     price: 3400.0,
     quantity: 35.0,
     unit: "QUINTAL",
@@ -19,11 +19,11 @@ final List<ProductModel> mockFarmerProductList = [
 
   // 2. Organic Finger Millet (Ragi / Nachni)
   ProductModel(
-    id: "FAR_PRD_002",
+    id: "FAR_PRD_002drt345",
     name: "Farm Fresh Ragi (Finger Millet)",
     category: "Raw Millet",
     description: "Traditional red ragi harvested without chemical pesticides, rich in calcium and natural fiber.",
-    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe0zMjS05_diRWunyxLrsNpshWgcXoPkXPdA9lADhehA&s",
     price: 42.0,
     quantity: 1500.0,
     unit: "KG",
@@ -35,11 +35,11 @@ final List<ProductModel> mockFarmerProductList = [
 
   // 3. Raw Pearl Millet (Bajra)
   ProductModel(
-    id: "FAR_PRD_003",
+    id: "FAR_PRD_003fg78",
     name: "Organic Pearl Millet (Bajra)",
     category: "Raw Millet",
     description: "High-grade rain-fed bajra grains packed in clean 50kg jute bags. Ideal for milling or cattle feed manufacturers.",
-    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnSfMSabdfEbfXFa4FKDr3UrebFcXo-5mYrntZ659GnpZkSXPa4NWQVDU&s=10",
     price: 2800.0,
     quantity: 20.0,
     unit: "QUINTAL",
@@ -51,11 +51,11 @@ final List<ProductModel> mockFarmerProductList = [
 
   // 4. Foxtail Millet (Kangni / Rala)
   ProductModel(
-    id: "FAR_PRD_004",
+    id: "FAR_PRD_004f23",
     name: "Unpolished Foxtail Millet (Kangni)",
     category: "Raw Millet",
     description: "Whole grain unpolished foxtail millet directly from the field, low glycemic index and high protein.",
-    imageUrl: "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8Rm2iq9mhyRwz4TMsUGac_h2MXxUlFD_iX4tecsJkfCSqcJZp3aXTBJ0&s=10",
     price: 60.0,
     quantity: 800.0,
     unit: "KG",
@@ -67,11 +67,11 @@ final List<ProductModel> mockFarmerProductList = [
 
   // 5. Little Millet (Kutki / Sava)
   ProductModel(
-    id: "FAR_PRD_005",
+    id: "FAR_PRD_005fdyh34",
     name: "Golden Little Millet (Kutki)",
     category: "Raw Millet",
     description: "Naturally dried little millet batch harvested from black soil farm, low moisture content.",
-    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI8wIMd4ETiNaxNdczIzPK7OlTy_nMYUrFms0QLiYk-IIa3B7_aMPL4dX-&s=10",
     price: 5200.0,
     quantity: 15.0,
     unit: "QUINTAL",
@@ -83,11 +83,11 @@ final List<ProductModel> mockFarmerProductList = [
 
   // 6. Proso Millet (Vari / Chena) - Pending Verification / Draft
   ProductModel(
-    id: "FAR_PRD_006",
+    id: "FAR_PRD_006oi345",
     name: "Farm Harvested Proso Millet (Vari)",
     category: "Raw Millet",
     description: "Early kharif crop harvested proso millet. Temporarily held for moisture testing.",
-    imageUrl: "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=500&q=80",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSihIvQzBzW3evc7MWkVIDul28mkjb-IzXgJTJVRO0q9g&s=10",
     price: 4500.0,
     quantity: 10.0,
     unit: "QUINTAL",
