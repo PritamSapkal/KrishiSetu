@@ -5,8 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:krishisetu/features/fpo/views/screens/producescreen.dart';
-import '../../../entry/viewmodels/IndexHandlingProvider.dart';
-import '../../../farmer/viewmodels/bottomAppbarIndexProvider.dart';
+import '../../viewmodels/FPOBottomAppbarIndexRiverpod.dart';
 import 'farmersscreen.dart';
 import 'homescreen.dart';
 import 'ProfileScreen.dart';
@@ -30,7 +29,7 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final int bottomappbarindex = ref.watch(BottomAppbarIndexProvider);
+    final int bottomappbarindex = ref.watch(FpoBottomAppbarindexProvider);
 
     return PopScope(
       // canPop is true ONLY when the user is already on the Home tab (index 0)
@@ -41,7 +40,7 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
 
         // If on any tab other than Home, redirect to Home (index 0)
         if (bottomappbarindex != 0) {
-          ref.read(BottomAppbarIndexProvider.notifier).update((state) => 0);
+          ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 0);
         }
       },
       child: Scaffold(
@@ -81,7 +80,7 @@ class _FpoDashboardState extends ConsumerState<FpoDashboard> {
           currentIndex: bottomappbarindex,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
-            ref.read(BottomAppbarIndexProvider.notifier).update((state) => index);
+            ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => index);
           },
           items: const [
             BottomNavigationBarItem(

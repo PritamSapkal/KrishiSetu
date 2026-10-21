@@ -18,6 +18,7 @@ import '../../dummydata/ProductListingDummyData.dart';
 import '../../dummydata/farmer_dummy_data.dart';
 import '../../models/FpoAuthModel.dart';
 import '../../models/FpoProfileModel.dart';
+import '../../viewmodels/FPOBottomAppbarIndexRiverpod.dart';
 import '../../viewmodels/FPO_OrderListRiverpod.dart';
 import 'AddFarmerScreen.dart';
 import 'AddProduceScreen.dart';
@@ -133,7 +134,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     InkWell(
                       borderRadius: BorderRadius.circular(16.r),
                       onTap: () {
-                        ref.read(BottomAppbarIndexProvider.notifier).update((state) => 3);
+                        ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 3);
                       },
                       child: Dashboardoverviewcart(
                         carttitle: "Farmers",
@@ -150,7 +151,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     InkWell(
                       borderRadius: BorderRadius.circular(16.r),
                       onTap: () {
-                        ref.read(BottomAppbarIndexProvider.notifier).update((state) => 1);
+                        ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 1);
                       },
                       child: Dashboardoverviewcart(
                         carttitle: "Produce",
@@ -180,7 +181,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     InkWell(
                       borderRadius: BorderRadius.circular(16.r),
                       onTap: () {
-                        ref.read(BottomAppbarIndexProvider.notifier).update((state) => 1);
+                        ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 1);
                       },
                       child: Dashboardoverviewcart(
                         carttitle: "Listings",
@@ -266,7 +267,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                     InkWell(
                       borderRadius: BorderRadius.circular(16.r),
                       onTap: () {
-                        ref.read(BottomAppbarIndexProvider.notifier).update((state) => 2);
+                        ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 2);
                       },
                       child: Quickactioncart(
                         icon: Icons.receipt_long_sharp,
@@ -310,7 +311,7 @@ class _HomescreenState extends ConsumerState<Homescreen> {
                   const Spacer(),
                   TextButton(
                     onPressed: () {
-                      ref.read(BottomAppbarIndexProvider.notifier).update((state) => 2);
+                      ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 2);
                     },
                     child: Text(
                       "View All",

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../auth/views/SignInPage.dart';
 import '../../../farmer/viewmodels/bottomAppbarIndexProvider.dart';
 import '../../dummydata/MockFpoData.dart';
+import '../../viewmodels/FPOBottomAppbarIndexRiverpod.dart';
 
 class Profilescreen extends ConsumerWidget {
   const Profilescreen({super.key});
@@ -22,7 +23,7 @@ class Profilescreen extends ConsumerWidget {
     final user = MockFpoData.mockFpoAuth.user;
     final profile = MockFpoData.mockFpoProfile;
     void makenavigationindextozero() {
-      ref.read(BottomAppbarIndexProvider.notifier).update((state) => 0);
+      ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 0);
     }
 
     return Scaffold(
@@ -450,7 +451,7 @@ class Profilescreen extends ConsumerWidget {
               onPressed: () {
                 Navigator.pop(dialogContext); // Close dialog
                 // Clear route stack and redirect to Signinpage
-                ref.read(BottomAppbarIndexProvider.notifier).update((state) => 0);
+                ref.read(FpoBottomAppbarindexProvider.notifier).update((state) => 0);
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const Signinpage()),
